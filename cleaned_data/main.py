@@ -115,9 +115,10 @@ def segmented_bar_chart():
             else:
                 y.append(0)
         plt.bar(x, y, color=color)
-    plt.xlabel('Season', fontsize=18)
-    plt.ylabel('Number of Champsionship Wins', fontsize=18)
+    plt.xlabel('Season', fontsize=10)
+    plt.ylabel('Number of Championship Wins', fontsize=10)
     plt.show()
+segmented_bar_chart()
 
 def sports_correlation(sport1, sport2):
     """Computes the correlation coefficient between two UF sports' win percentages.
