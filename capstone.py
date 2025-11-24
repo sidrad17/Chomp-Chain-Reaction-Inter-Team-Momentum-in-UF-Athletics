@@ -17,6 +17,9 @@ def check_sport_validity(sport):
         return False
     return True
 
+def find_start_year(sport_list):
+    return True
+
 def retrieve_data_frame(sport):
     if sport == 'softball':
         return sb_df
@@ -39,70 +42,6 @@ def retrieve_data_frame(sport):
     #elif sport == "volleyball":
     #    return vb_d
 
-def find_start_year(sport_list):
-    sport_df = retrieve_data_frame(sport_list[0])
-    start_year = int(sport_df['year'].iloc[-1][0:2])
-    for i in range (len(sport_list)):
-        sport_df = retrieve_data_frame(sport_list[i])
-        if (int(sport_df['year'].iloc[-1][0:2]) < start_year):
-            start_year = int(sport_df.iloc[-1,0][0:2])
-    start_year_str = f'{start_year}-{start_year+1}'
-    return start_year_str
-
-def get_color(sport):
-    if sport == 'softball':
-        return 'olive'
-    elif sport == 'baseball':
-        return 'green'
-    elif sport == 'football':
-        return 'orange'
-    elif sport == 'gymnastics':
-        return 'purple'
-    elif sport == 'tennis':
-        return 'red'
-    elif sport == "women's tennis":
-        return 'pink'
-    elif sport == 'basketball':
-        return 'blue'
-    elif sport == "women's basketball":
-        return 'cyan'
-    elif sport == 'soccer':
-        return 'gray'
-    elif sport == "volleyball":
-        return 'brown'
-
-def first_graph():
-    #complete_sport_list = ['football', 'basketball','softball','baseball','gymnastics','volleyball','tennis',"women's tennis",'soccer',"women's basketball"]
-    #start_year = find_start_year(complete_sport_list)
-    temp_sport_list = ['softball']
-    for i in range (len(temp_sport_list)):
-        sport_df = retrieve_data_frame(temp_sport_list[i])
-        sport_df.plot(x ='year',y = 'win%')
-    plt.title(f'Win/Loss Records of Florida Gators Sports from 1906 to Present')
-    plt.xlabel('Season', fontsize = 18)
-    plt.ylabel('Record Percentage', fontsize = 18)
-    plt.show()
-
-def segmented_bar_chart():
-    temp_sport_list = ['softball','baseball']
-    x = (retrieve_data_frame('baseball'))['year'].tolist()
-    start_year_int = int(find_start_year(temp_sport_list)[0:2])
-    for i in range (len(temp_sport_list)):
-        color = get_color(temp_sport_list[i])
-        y = []
-        sport_df = retrieve_data_frame(temp_sport_list[i])
-        if(int(sport_df['year'].iloc[-1][0:2]) > start_year_int):
-            for i in range(int(sport_df['year'].iloc[-1][0:2]) - start_year_int):
-                y.append(0)
-        for j in range (len(retrieve_data_frame(temp_sport_list[i])['year'].tolist())):
-            if (sport_df['year'].iloc[-1][0:2]) == start_year_int:
-                y.append(1)
-            else:
-                y.append(0)
-        plt.bar(x,y, color = color)
-    plt.show()
-
-segmented_bar_chart()
 
 running = True
 while (running):
