@@ -1,4 +1,6 @@
 import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
 sb_df = pd.read_csv('softball.csv')
 bb_df = pd.read_csv('baseball.csv')
 #test comment
@@ -87,32 +89,35 @@ def first_graph():
     plt.ylabel('Record Percentage', fontsize = 18)
     plt.show()
 
-#not done
-def segmented_bar_chart():
-    temp_sport_list = ['softball','baseball']
-    x = (retrieve_data_frame('baseball'))['year'].tolist()
-    start_year_int = int(find_start_year(temp_sport_list)[0:2])
-    for i in range (len(temp_sport_list)):
-        color = get_color(temp_sport_list[i])
-        y = []
-        sport_df = retrieve_data_frame(temp_sport_list[i])
-        if(int(sport_df['year'].iloc[-1][0:2]) > start_year_int):
-            for i in range(int(sport_df['year'].iloc[-1][0:2]) - start_year_int):
-                y.append(0)
-        for j in range (len(retrieve_data_frame(temp_sport_list[i])['year'].tolist())):
-            if (sport_df['year'].iloc[-1][0:2]) == start_year_int:
-                y.append(1)
-            else:
-                y.append(0)
-        plt.bar(x,y, color = color)
-    plt.show()
-
 def convert_year_to_integer(year_string):
     return int(year_string.split("-")[0])
 
 #function for option 2 graph
 def plot_sports_records(list_of_sports):
+    print("")
     #make option 2 graph
+
+#not done
+def segmented_bar_chart():
+    temp_sport_list = ['softball', 'baseball']
+    x = (retrieve_data_frame('baseball'))['year'].tolist()
+    start_year_int = int(find_start_year(temp_sport_list)[0:2])
+    for i in range(len(temp_sport_list)):
+        color = get_color(temp_sport_list[i])
+        y = []
+        sport_df = retrieve_data_frame(temp_sport_list[i])
+        if (convert_year_to_integer(sport_df['year'].iloc[-1]) > start_year_int):
+            for i in range(int(sport_df['year'].iloc[-1][0:2]) - start_year_int - 1):
+                y.append(0)
+        for j in range(len(sport_df['year'].tolist())):
+            if ((sport_df['national_championship'].iloc[j]) == 'yes'):
+                y.append(1)
+            else:
+                y.append(0)
+        plt.bar(x, y, color=color)
+    plt.xlabel('Season', fontsize=18)
+    plt.ylabel('Number of Champsionship Wins', fontsize=18)
+    plt.show()
 
 def sports_correlation(sport1, sport2):
     """Computes the correlation coefficient between two UF sports' win percentages.
@@ -170,6 +175,7 @@ def sports_correlation(sport1, sport2):
 
 
 def compare_sports_means(list_of_sports):
+    print("")
     #make graphs and compare mean values, option 4
 
 running = True
