@@ -146,7 +146,6 @@ while (running):
         #print('2')
 
     elif (option == '3'):
-        sports_list = []
         sport1 = input("Enter your first sport: ")
         sport1 = sport1.lower()
         if(check_sport_validity(sport1) == False):
