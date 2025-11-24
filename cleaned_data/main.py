@@ -18,10 +18,6 @@ def check_sport_validity(sport):
         return False
     return True
 
-def find_start_year(sport_list):
-    #need to finish
-    return True
-
 def retrieve_data_frame(sport):
     if sport == 'softball':
         return sb_df
@@ -45,6 +41,17 @@ def retrieve_data_frame(sport):
     #elif sport == "volleyball":
     #    return vb_df
 
+def find_start_year(sport_list):
+    sport_df = retrieve_data_frame(sport_list[0])
+    start_year = int(sport_df['year'].iloc[-1][0:2])
+    for i in range (len(sport_list)):
+        sport_df = retrieve_data_frame(sport_list[i])
+        if (int(sport_df['year'].iloc[-1][0:2]) < start_year):
+            start_year = int(sport_df.iloc[-1,0][0:2])
+    start_year_str = f'{start_year}-{start_year+1}'
+    return start_year_str
+
+
 def get_color(sport):
     if sport == 'softball':
         return 'olive'
@@ -66,6 +73,7 @@ def get_color(sport):
         return 'gray'
     elif sport == "volleyball":
         return 'brown'
+
 
 running = True
 while (running):
@@ -108,7 +116,7 @@ while (running):
         sport1_color = get_color(sport1)
         sport2_df = retrieve_data_frame(sport2)
         sport2_color = get_color(sport2)
-        #find start years
+        start_year = find_start_year([sport1,sport2])
         #make graph
         #print correlation coefficient
         #make specific observation???
