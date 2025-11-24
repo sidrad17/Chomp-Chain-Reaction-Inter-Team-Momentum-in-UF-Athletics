@@ -19,6 +19,7 @@ def check_sport_validity(sport):
     return True
 
 def find_start_year(sport_list):
+    #need to finish
     return True
 
 def retrieve_data_frame(sport):
@@ -83,10 +84,11 @@ while (running):
             print("")
             continue
         champ_df = retrieve_data_frame(champ_sport)
+        champ_color = get_color(champ_sport)
         #make graphs
 
     elif (option == '2'):
-        #parse through string
+        #user input needed
         print('2')
 
     elif (option == '3'):
@@ -103,7 +105,9 @@ while (running):
             print("")
             continue
         sport1_df = retrieve_data_frame(sport1)
+        sport1_color = get_color(sport1)
         sport2_df = retrieve_data_frame(sport2)
+        sport2_color = get_color(sport2)
         #find start years
         #make graph
         #print correlation coefficient
