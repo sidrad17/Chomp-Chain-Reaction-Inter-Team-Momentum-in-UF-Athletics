@@ -1,4 +1,6 @@
 import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
 sb_df = pd.read_csv('softball.csv')
 bb_df = pd.read_csv('baseball.csv')
 #test comment
@@ -40,6 +42,8 @@ def retrieve_data_frame(sport):
     #    return soc_df
     #elif sport == "volleyball":
     #    return vb_df
+def convert_year_to_integer(year_string):
+    return int(year_string.split("-")[0])
 
 def find_start_year(sport_list):
     sport_df = retrieve_data_frame(sport_list[0])
@@ -74,13 +78,59 @@ def get_color(sport):
     elif sport == "volleyball":
         return 'brown'
 
-def convert_year_to_integer(year_string):
-    return int(year_string.split("-")[0])
+#not done
+def first_graph():
+    #complete_sport_list = ['football', 'basketball','softball','baseball','gymnastics','volleyball','tennis',"women's tennis",'soccer',"women's basketball"]
+    #start_year = find_start_year(complete_sport_list)
+    temp_sport_list = ['softball']
+    for i in range (len(temp_sport_list)):
+        sport_df = retrieve_data_frame(temp_sport_list[i])
+        sport_df.plot(x ='year',y = 'win%')
+    plt.title(f'Win/Loss Records of Florida Gators Sports from 1906 to Present')
+    plt.xlabel('Season', fontsize = 18)
+    plt.ylabel('Record Percentage', fontsize = 18)
+    plt.show()
 
 #function for option 2 graph
 def plot_sports_records(list_of_sports):
+    print("")
     #make option 2 graph
 
+#not done
+def segmented_bar_chart():
+    temp_sport_list = ['softball', 'baseball']
+    x = (retrieve_data_frame('baseball'))['year'].tolist()
+    start_year_int = int(find_start_year(temp_sport_list)[0:2])
+    for i in range(len(temp_sport_list)):
+        color = get_color(temp_sport_list[i])
+        y = []
+        sport_df = retrieve_data_frame(temp_sport_list[i])
+        if (convert_year_to_integer(sport_df['year'].iloc[-1]) > start_year_int):
+            for i in range(int(sport_df['year'].iloc[-1][0:2]) - start_year_int - 1):
+                y.append(0)
+        for j in range(len(sport_df['year'].tolist())):
+            if ((sport_df['national_championship'].iloc[j]) == 'yes'):
+                y.append(1)
+            else:
+                y.append(0)
+        plt.bar(x, y, color=color)
+
+    plt.xlabel('Season', fontsize=10)
+    plt.ylabel('Number of Championship Wins', fontsize=10)
+
+    plt.show()
+segmented_bar_chart()
+
+#option 1 graph function,
+def champ_sports_comparison(champ_sport):
+    pass
+
+#function for option 2 graph
+def plot_sports_records(list_of_sports):
+    print("")
+    #make option 2 graph
+
+#not done
 def sports_correlation(sport1, sport2):
     """Computes the correlation coefficient between two UF sports' win percentages.
     Produces:
@@ -90,7 +140,7 @@ def sports_correlation(sport1, sport2):
     sport1_df = retrieve_data_frame(sport1)
     sport2_df = retrieve_data_frame(sport2)
 
-    #Converts csv years to integers to work with in the graph
+    #Converts each sport's 'year' string to an integer and stores as a new column
     integer_years_df1 = []
     for season in sport1_df["year"]:
         converted = convert_year_to_integer(season)
@@ -103,10 +153,20 @@ def sports_correlation(sport1, sport2):
         integer_years_df2.append(converted)
     sport2_df["integer_years"] = integer_years_df2
 
-    #determines the shared start year between the two sports, and considers everything that year and beyond
-    shared_start_year = find_start_year([sport1_df, sport2_df])
-    sport1_df = sport1_df[sport1_df["integer_years"] >= shared_start_year]
-    sport2_df = sport2_df[sport2_df["integer_years"] >= shared_start_year]
+    #sorts both sports chronologically using the integer years
+    sport1_df = sport1_df.sort_values("integer_years")
+    sport2_df = sport2_df.sort_values("integer_years")
+
+    #use sets to find overlapping years
+    common_years = set(sport1_df["integer_years"]).intersection(set(sport2_df["integer_years"]))
+
+    #filters both sports to only overlapping years
+    sport1_df = sport1_df[sport1_df["integer_years"].isin(common_years)]
+    sport2_df = sport2_df[sport2_df["integer_years"].isin(common_years)]
+
+    #resets both sports indecies so they align when graphing
+    sport1_df = sport1_df.reset_index(drop=True)
+    sport2_df = sport2_df.reset_index(drop=True)
 
     #extracts lists with each sports' win% over the years
     win1 = list(sport1_df["win%"])
@@ -129,14 +189,16 @@ def sports_correlation(sport1, sport2):
     plt.scatter(x, y, color = "blue", label = "Win Percentage Data Points")
     plt.plot(x, best_fit, color = "red", label = "Line of Best Fit")
 
+
     plt.xlabel(f"{sport1.capitalize()} Win Percentage")
     plt.ylabel(f"{sport2.capitalize()} Win Percentage")
     plt.title(f"{sport1.capitalize()} vs. {sport2.capitalize()}\n Correlation Coefficient: {r}")
     plt.legend()
     plt.show()
 
-
+#option 4 graph
 def compare_sports_means(list_of_sports):
+    print("")
     #make graphs and compare mean values, option 4
 
 running = True
@@ -160,8 +222,18 @@ while (running):
         #make graphs
 
     elif (option == '2'):
-        #user input needed
-        print('2')
+        num_sports = int(input("Enter the number of sports to compare: "))
+        sports_list = []
+
+        for i in range(num_sports):
+            sport = input("Enter the sport for comparison: ")
+            sport = sport.lower()
+            if (check_sport_validity(sport) == False):
+                print("Please enter a valid sport.")
+                print("")
+                continue
+            sports_list.append(sport)
+        plot_sports_records(sports_list)
 
     elif (option == '3'):
         sport1 = input("Enter your first sport: ")
@@ -176,12 +248,7 @@ while (running):
             print("Please enter a valid sport.")
             print("")
             continue
-        sport1_df = retrieve_data_frame(sport1)
-        sport1_color = get_color(sport1)
-        sport2_df = retrieve_data_frame(sport2)
-        sport2_color = get_color(sport2)
-        start_year = find_start_year([sport1,sport2])
-        #make graph
+        sports_correlation(sport1, sport2)
         #print correlation coefficient
         #make specific observation???
 
