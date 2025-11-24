@@ -88,7 +88,7 @@ def first_graph():
     plt.ylabel('Record Percentage', fontsize = 18)
     plt.show()
 
-#not done
+#notdone
 def segmented_bar_chart():
     temp_sport_list = ['softball','baseball']
     x = (retrieve_data_frame('baseball'))['year'].tolist()
