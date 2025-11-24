@@ -24,8 +24,9 @@ def find_start_year(sport_list):
 def retrieve_data_frame(sport):
     if sport == 'softball':
         return sb_df
-    #elif sport == 'baseball':
-    #   return bb_df
+    elif sport == 'baseball':
+       return bb_df
+    #uncomment as dataframes become available
     #elif sport == 'football':
     #   return fb_df
     #elif sport == 'gymnastics':
