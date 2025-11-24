@@ -1,5 +1,4 @@
 import pandas as pd
-import matplotlib.pyplot as plt
 sb_df = pd.read_csv('softball.csv')
 bb_df = pd.read_csv('baseball.csv')
 #test comment
@@ -75,39 +74,70 @@ def get_color(sport):
     elif sport == "volleyball":
         return 'brown'
 
-#notdone
-def first_graph():
-    #complete_sport_list = ['football', 'basketball','softball','baseball','gymnastics','volleyball','tennis',"women's tennis",'soccer',"women's basketball"]
-    #start_year = find_start_year(complete_sport_list)
-    temp_sport_list = ['softball']
-    for i in range (len(temp_sport_list)):
-        sport_df = retrieve_data_frame(temp_sport_list[i])
-        sport_df.plot(x ='year',y = 'win%')
-    plt.title(f'Win/Loss Records of Florida Gators Sports from 1906 to Present')
-    plt.xlabel('Season', fontsize = 18)
-    plt.ylabel('Record Percentage', fontsize = 18)
+def convert_year_to_integer(year_string):
+    return int(year_string.split("-")[0])
+
+#function for option 2 graph
+def plot_sports_records(list_of_sports):
+    #make option 2 graph
+
+def sports_correlation(sport1, sport2):
+    """Computes the correlation coefficient between two UF sports' win percentages.
+    Produces:
+        - Scatter plot (sport 1 win% vs. sport 2 win%)
+        - Best fit regression line
+        """
+    sport1_df = retrieve_data_frame(sport1)
+    sport2_df = retrieve_data_frame(sport2)
+
+    #Converts csv years to integers to work with in the graph
+    integer_years_df1 = []
+    for season in sport1_df["year"]:
+        converted = convert_year_to_integer(season)
+        integer_years_df1.append(converted)
+    sport1_df["integer_years"] = integer_years_df1
+
+    integer_years_df2 = []
+    for season in sport2_df["year"]:
+        converted = convert_year_to_integer(season)
+        integer_years_df2.append(converted)
+    sport2_df["integer_years"] = integer_years_df2
+
+    #determines the shared start year between the two sports, and considers everything that year and beyond
+    shared_start_year = find_start_year([sport1_df, sport2_df])
+    sport1_df = sport1_df[sport1_df["integer_years"] >= shared_start_year]
+    sport2_df = sport2_df[sport2_df["integer_years"] >= shared_start_year]
+
+    #extracts lists with each sports' win% over the years
+    win1 = list(sport1_df["win%"])
+    win2 = list(sport2_df["win%"])
+
+    #converts to numpy arrays to be plotted
+    x = np.array(win1)
+    y = np.array(win2)
+
+    #computes correlation coefficient
+    r = np.corrcoef(x,y)[0,1]
+    #computes line of best fit
+    mean_x = np.mean(x)
+    mean_y = np.mean(y)
+    m = np.sum((x - mean_x)*(y - mean_y)) / np.sum((x - mean_x)**2)
+    b = mean_y - (m * mean_x)
+    best_fit = m * x + b
+
+    plt.figure(figsize=(10,10)) #we can change this, I just put in a random scale for now
+    plt.scatter(x, y, color = "blue", label = "Win Percentage Data Points")
+    plt.plot(x, best_fit, color = "red", label = "Line of Best Fit")
+
+    plt.xlabel(f"{sport1.capitalize()} Win Percentage")
+    plt.ylabel(f"{sport2.capitalize()} Win Percentage")
+    plt.title(f"{sport1.capitalize()} vs. {sport2.capitalize()}\n Correlation Coefficient: {r}")
+    plt.legend()
     plt.show()
 
-#notdone
-def segmented_bar_chart():
-    temp_sport_list = ['softball','baseball']
-    x = (retrieve_data_frame('baseball'))['year'].tolist()
-    start_year_int = int(find_start_year(temp_sport_list)[0:2])
-    for i in range (len(temp_sport_list)):
-        color = get_color(temp_sport_list[i])
-        y = []
-        sport_df = retrieve_data_frame(temp_sport_list[i])
-        if(int(sport_df['year'].iloc[-1][0:2]) > start_year_int):
-            for i in range(int(sport_df['year'].iloc[-1][0:2]) - start_year_int):
-                y.append(0)
-        for j in range (len(retrieve_data_frame(temp_sport_list[i])['year'].tolist())):
-            if (sport_df['year'].iloc[-1][0:2]) == start_year_int:
-                y.append(1)
-            else:
-                y.append(0)
-        plt.bar(x,y, color = color)
-    plt.show()
 
+def compare_sports_means(list_of_sports):
+    #make graphs and compare mean values, option 4
 
 running = True
 while (running):
