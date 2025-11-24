@@ -75,6 +75,7 @@ def get_color(sport):
     elif sport == "volleyball":
         return 'brown'
 
+#not done
 def first_graph():
     #complete_sport_list = ['football', 'basketball','softball','baseball','gymnastics','volleyball','tennis',"women's tennis",'soccer',"women's basketball"]
     #start_year = find_start_year(complete_sport_list)
@@ -87,6 +88,7 @@ def first_graph():
     plt.ylabel('Record Percentage', fontsize = 18)
     plt.show()
 
+#not done
 def segmented_bar_chart():
     temp_sport_list = ['softball','baseball']
     x = (retrieve_data_frame('baseball'))['year'].tolist()
@@ -105,8 +107,6 @@ def segmented_bar_chart():
                 y.append(0)
         plt.bar(x,y, color = color)
     plt.show()
-
-segmented_bar_chart()
 
 
 running = True
