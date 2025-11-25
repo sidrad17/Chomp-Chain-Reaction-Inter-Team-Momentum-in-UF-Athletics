@@ -109,20 +109,21 @@ def segmented_bar_chart():
         y = []
         sport_df = retrieve_data_frame(temp_sport_list[i])
         if (convert_year_to_integer(sport_df['year'].iloc[-1]) > start_year_int):
-            for i in range(int(sport_df['year'].iloc[-1][0:2]) - start_year_int - 1,):
+            for k in range(int(sport_df['year'].iloc[-1][0:2]) - start_year_int - 1):
                 y.append(0)
         for j in range(1,len(sport_df['year'].tolist())+1):
             if ((sport_df['national_championship'].iloc[-j]) == 'yes'):
                 y.append(1)
             else:
                 y.append(0)
-        plt.bar(x_vals, y, color=color)
+        plt.bar(x_vals, y, color=color, label = temp_sport_list[i])
     plt.xlabel('Season', fontsize=10)
     plt.ylabel('Number of Championship Wins', fontsize=10)
     plt.yticks([1.0],[1])
+    plt.title('Champsionship Wins per Year')
     plt.xticks(['26-27','30-31','40-41','50-51','60-61','70-71','80-81','90-91','00-01','10-11','20-21'],['26-27','30-31','40-41','50-51','60-61','70-71','80-81','90-91','00-01','10-11','20-21'],fontsize = 8)
+    plt.legend()
     plt.show()
-segmented_bar_chart()
 
 #option 1 graph function,
 def champ_sports_comparison(champ_sport):
