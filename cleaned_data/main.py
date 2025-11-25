@@ -5,12 +5,11 @@ sb_df = pd.read_csv('softball.csv')
 bb_df = pd.read_csv('baseball.csv')
 #test comment
 #uncomment when CSVs are available
-#fb_df = pd.read_csv('football.csv')
-#bb_df = pd.read_csv('baseball.csv')
+fb_df = pd.read_csv('football.csv')
 #gym_df = pd.read_csv('gymnastics.csv')
 #ten_df = pd.read_csv('tennis.csv')
 #wten_df = pd.read_csv('womenstennis.csv')
-#bk_df = pd.read_csv('basketball.csv')
+bk_df = pd.read_csv('basketball.csv')
 #wbk_df = pd.read_csv('womensbasketball.csv')
 #soc_df = pd.read_csv('soccer.csv')
 #vb_df = pd.read_csv('volleyball.csv')
@@ -26,16 +25,16 @@ def retrieve_data_frame(sport):
     elif sport == 'baseball':
        return bb_df
     #uncomment as dataframes become available
-    #elif sport == 'football':
-    #   return fb_df
+    elif sport == 'football':
+       return fb_df
     #elif sport == 'gymnastics':
     #   return gym_df
     #elif sport == 'tennis':
     #   return ten_df
     #elif sport == "women's tennis":
     #   return wten_df
-    #elif sport == 'basketball':
-    #    return bk_df
+    elif sport == 'basketball':
+        return bk_df
     #elif sport == "women's basketball":
     #    return wbk_df
     #elif sport == 'soccer':
@@ -82,7 +81,7 @@ def get_color(sport):
 def first_graph():
     #complete_sport_list = ['football', 'basketball','softball','baseball','gymnastics','volleyball','tennis',"women's tennis",'soccer',"women's basketball"]
     #start_year = find_start_year(complete_sport_list)
-    temp_sport_list = ['softball']
+    temp_sport_list = ['softball','basketball','baseball','football']
     for i in range (len(temp_sport_list)):
         sport_df = retrieve_data_frame(temp_sport_list[i])
         sport_df.plot(x ='year',y = 'win%')
@@ -98,11 +97,11 @@ def plot_sports_records(list_of_sports):
 
 #check if it stacks
 def segmented_bar_chart():
-    temp_sport_list = ['softball', 'baseball']
+    temp_sport_list = ['softball','basketball','baseball','football']
     x = (retrieve_data_frame('baseball'))['year'].tolist()
     x_vals = []
-    for i in range (1,len(retrieve_data_frame('baseball')['year'].tolist())+1):
-        x_vals.append(retrieve_data_frame('baseball')['year'].iloc[-i])
+    for i in range (1,len(retrieve_data_frame('football')['year'].tolist())+1):
+        x_vals.append(retrieve_data_frame('football')['year'].iloc[-i])
     start_year_int = int(find_start_year(temp_sport_list)[0:2])
     for i in range(len(temp_sport_list)):
         color = get_color(temp_sport_list[i])
@@ -119,11 +118,13 @@ def segmented_bar_chart():
         plt.bar(x_vals, y, color=color, label = temp_sport_list[i])
     plt.xlabel('Season', fontsize=10)
     plt.ylabel('Number of Championship Wins', fontsize=10)
-    plt.yticks([1.0],[1])
+    #plt.yticks([1.0],[1])
     plt.title('Champsionship Wins per Year')
-    plt.xticks(['26-27','30-31','40-41','50-51','60-61','70-71','80-81','90-91','00-01','10-11','20-21'],['26-27','30-31','40-41','50-51','60-61','70-71','80-81','90-91','00-01','10-11','20-21'],fontsize = 8)
+    #plt.xticks(['26-27','30-31','40-41','50-51','60-61','70-71','80-81','90-91','00-01','10-11','20-21'],['26-27','30-31','40-41','50-51','60-61','70-71','80-81','90-91','00-01','10-11','20-21'],fontsize = 8)
     plt.legend()
     plt.show()
+
+segmented_bar_chart()
 
 #option 1 graph function,
 def champ_sports_comparison(champ_sport):
