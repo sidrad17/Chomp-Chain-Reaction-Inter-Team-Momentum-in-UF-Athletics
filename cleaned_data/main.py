@@ -43,7 +43,17 @@ def retrieve_data_frame(sport):
     #elif sport == "volleyball":
     #    return vb_df
 def convert_year_to_integer(year_string):
-    return int(year_string.split("-")[0])
+    start = year_string.split("-")[0]
+    #converts 2 digit years into 4 digit years
+    if len(start) == 4:
+        return int(start)
+
+    start_num = int(start)
+    if start_num <= 26:
+        return 2000 + start_num
+    else:
+        return 1900 + start_num
+
 
 def find_start_year(sport_list):
     sport_df = retrieve_data_frame(sport_list[0])
@@ -91,10 +101,6 @@ def first_graph():
     plt.ylabel('Record Percentage', fontsize = 18)
     plt.show()
 
-#function for option 2 graph
-def plot_sports_records(list_of_sports):
-    print("")
-    #make option 2 graph
 
 #check if it stacks
 def segmented_bar_chart():
@@ -200,8 +206,83 @@ def sports_correlation(sport1, sport2):
     plt.legend()
     plt.show()
 
-#option 4 graph
-def compare_sports_means(list_of_sports):
+#option 4 graph not done
+def compare_sports_means(sport1_name, sport2_name):
+    sport1_df = retrieve_data_frame(sport1_name)
+    sport2_df = retrieve_data_frame(sport2_name)
+
+    # Convert year strings to integer starting years
+    sport1_df["start_year"] = [convert_year_to_integer(season) for season in sport1_df["year"]]
+    sport2_df["start_year"] = [convert_year_to_integer(season) for season in sport2_df["year"]]
+
+    # Keep original "06-07" labels
+    sport1_df["season_label"] = sport1_df["year"]
+    sport2_df["season_label"] = sport2_df["year"]
+
+    #user selects interval to analyze over
+    start_year_input = int(input("Start Year: "))
+    end_year_input = int(input("End Year: "))
+
+    # Filters dfs to selected interval
+    sport1_interval_df = sport1_df[(sport1_df["start_year"] >= start_year_input) & (sport1_df["start_year"] <= end_year_input)]
+    sport2_interval_df = sport2_df[(sport2_df["start_year"] >= start_year_input) & (sport2_df["start_year"] <= end_year_input)]
+
+    # Determine overlapping seasons
+    shared_years = sorted(set(sport1_interval_df["start_year"]) & set(sport2_interval_df["start_year"]))
+
+    if not shared_years:
+        print("There are no overlapping seasons between these sports in this interval.")
+        return
+
+    #ensures only shared years are being evaluated
+    sport1_shared_df = sport1_interval_df[sport1_interval_df["start_year"].isin(shared_years)]
+    sport2_shared_df = sport2_interval_df[sport2_interval_df["start_year"].isin(shared_years)]
+
+    # Sort for safety
+    sport1_shared_df = sport1_shared_df.sort_values("start_year")
+    sport2_shared_df = sport2_shared_df.sort_values("start_year")
+
+    #basic info needed for plotting (years, win%s, labels)
+    sport1_years = list(sport1_shared_df["start_year"])
+    sport2_years = list(sport2_shared_df["start_year"])
+
+    sport1_win = list(sport1_shared_df["win%"])
+    sport2_win = list(sport2_shared_df["win%"])
+
+    sport1_labels = list(sport1_shared_df["season_label"])
+    sport2_labels = list(sport2_shared_df["season_label"])
+
+    #overall aroc over given time period
+    interval_length = sport1_years[-1] - sport1_years[0]
+    sport1_overall_aroc = (sport1_win[-1] - sport1_win[0]) / interval_length
+    sport2_overall_aroc = (sport2_win[-1] - sport2_win[0]) / interval_length
+
+
+    #plot graph
+    plt.figure(figsize=(10, 10))
+    # Win% performance lines
+    plt.plot(sport1_years, sport1_win, linewidth=3, marker="o", color=get_color(sport1_name), label=f"{sport1_name.capitalize()} Win%")
+
+    plt.plot(sport2_years, sport2_win, linewidth=3, marker="o", color=get_color(sport2_name), label=f"{sport2_name.capitalize()} Win%")
+
+    # Shared x-tick labels
+    plt.xticks(sport1_years, sport1_labels)
+
+    plt.title(f"Performance Trend + Overall AROC: {sport1_name.capitalize()} vs {sport2_name.capitalize()}\n ({start_year_input}–{end_year_input})")
+    plt.xlabel("Season")
+    plt.ylabel("Win Percentage")
+    plt.legend()
+    plt.show()
+
+    #analysis of aroc
+    def print_summary(team, start_label, end_label, start_win, end_win):
+        total_change = end_win - start_win
+        direction = "increased" if total_change > 0 else "decreased" if total_change < 0 else "stayed the same"
+        print(f"{team.capitalize()}'s win percentage {direction} by {abs(total_change):.2f} points from {start_label} to {end_label}, averaging {(total_change / interval_length):.2f} points per year.")
+
+    print_summary(sport1_name, sport1_shared_df.iloc[0]["season_label"], sport1_shared_df.iloc[-1]["season_label"], sport1_win[0], sport1_win[-1])
+    print_summary(sport2_name, sport2_shared_df.iloc[0]["season_label"], sport2_shared_df.iloc[-1]["season_label"], sport2_win[0], sport2_win[-1])
+
     print("")
     #make graphs and compare mean values, option 4
 
@@ -257,6 +338,20 @@ while (running):
         #make specific observation???
 
     elif (option == '4'):
+        sport1 = input("Enter your first sport: ")
+        sport1 = sport1.lower()
+        if  (check_sport_validity(sport1) == False):
+            print("Please enter a valid sport.")
+            print("")
+            continue
+        sport2 = input("Enter your second sport: ")
+        sport2 = sport2.lower()
+        if (check_sport_validity(sport2) == False):
+            print("Please enter a valid sport.")
+            print("")
+            continue
+        compare_sports_means(sport1, sport2)
+
         print("4.")
         #just added the print statement so there wouldn't be an error
         #idk if we wanted to be able to compare just two sports or a bunch so I figured I'd leave input up to you
