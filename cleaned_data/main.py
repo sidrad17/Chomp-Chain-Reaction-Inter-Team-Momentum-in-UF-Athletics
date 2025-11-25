@@ -97,26 +97,31 @@ def plot_sports_records(list_of_sports):
     print("")
     #make option 2 graph
 
-#not done
+#check if it stacks
 def segmented_bar_chart():
     temp_sport_list = ['softball', 'baseball']
     x = (retrieve_data_frame('baseball'))['year'].tolist()
+    x_vals = []
+    for i in range (1,len(retrieve_data_frame('baseball')['year'].tolist())+1):
+        x_vals.append(retrieve_data_frame('baseball')['year'].iloc[-i])
     start_year_int = int(find_start_year(temp_sport_list)[0:2])
     for i in range(len(temp_sport_list)):
         color = get_color(temp_sport_list[i])
         y = []
         sport_df = retrieve_data_frame(temp_sport_list[i])
         if (convert_year_to_integer(sport_df['year'].iloc[-1]) > start_year_int):
-            for i in range(int(sport_df['year'].iloc[-1][0:2]) - start_year_int - 1):
+            for i in range(int(sport_df['year'].iloc[-1][0:2]) - start_year_int - 1,):
                 y.append(0)
-        for j in range(len(sport_df['year'].tolist())):
-            if ((sport_df['national_championship'].iloc[j]) == 'yes'):
+        for j in range(1,len(sport_df['year'].tolist())+1):
+            if ((sport_df['national_championship'].iloc[-j]) == 'yes'):
                 y.append(1)
             else:
                 y.append(0)
-        plt.bar(x, y, color=color)
+        plt.bar(x_vals, y, color=color)
     plt.xlabel('Season', fontsize=10)
     plt.ylabel('Number of Championship Wins', fontsize=10)
+    plt.yticks([1.0],[1])
+    plt.xticks(['26-27','30-31','40-41','50-51','60-61','70-71','80-81','90-91','00-01','10-11','20-21'],['26-27','30-31','40-41','50-51','60-61','70-71','80-81','90-91','00-01','10-11','20-21'],fontsize = 8)
     plt.show()
 segmented_bar_chart()
 
