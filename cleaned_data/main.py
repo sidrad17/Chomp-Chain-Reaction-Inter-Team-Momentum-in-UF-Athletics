@@ -68,8 +68,6 @@ def get_color(sport):
         return 'green'
     elif sport == 'football':
         return 'orange'
-    elif sport == 'gymnastics':
-        return 'purple'
     elif sport == 'tennis':
         return 'red'
     elif sport == "women's tennis":
@@ -81,7 +79,7 @@ def get_color(sport):
     elif sport == 'soccer':
         return 'gray'
     elif sport == "volleyball":
-        return 'brown'
+        return 'purple'
 
 #not done
 def first_graph():
@@ -99,7 +97,7 @@ def first_graph():
 
 #check if it stacks
 def segmented_bar_chart():
-    temp_sport_list = ['softball','basketball','baseball','football']
+    temp_sport_list = ['softball','basketball','baseball','football','tennis','soccer','volleyball']
     x = (retrieve_data_frame('baseball'))['year'].tolist()
     x_vals = []
     for i in range (1,len(retrieve_data_frame('football')['year'].tolist())+1):
