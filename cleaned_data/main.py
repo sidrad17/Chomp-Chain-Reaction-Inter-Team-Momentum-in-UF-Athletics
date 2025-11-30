@@ -3,7 +3,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 sb_df = pd.read_csv('softball.csv')
 bb_df = pd.read_csv('baseball.csv')
-#test comment
 #uncomment when CSVs are available
 fb_df = pd.read_csv('football.csv')
 #ten_df = pd.read_csv('tennis.csv')
@@ -50,18 +49,6 @@ def convert_year_to_integer(year_string):
     else:
         return 1900 + start_num
 
-
-def find_start_year(sport_list):
-    sport_df = retrieve_data_frame(sport_list[0])
-    start_year = int(sport_df['year'].iloc[-1][0:2])
-    for i in range (len(sport_list)):
-        sport_df = retrieve_data_frame(sport_list[i])
-        if (int(sport_df['year'].iloc[-1][0:2]) < start_year):
-            start_year = int(sport_df.iloc[-1,0][0:2])
-    start_year_str = f'{start_year}-{start_year+1}'
-    return start_year_str
-
-
 def get_color(sport):
     if sport == 'softball':
         return 'olive'
@@ -101,24 +88,24 @@ def segmented_bar_chart():
     temp_sport_list = ['softball','basketball','baseball','football','tennis','soccer','volleyball', "women's basketball"]
     start_year = 1925
 
-    x = (retrieve_data_frame('baseball'))['year'].tolist()
     x_vals = []
     for i in range (1,len(retrieve_data_frame('football')['year'].tolist())+1):
         x_vals.append(retrieve_data_frame('football')['year'].iloc[-i])
-    start_year_int = int(find_start_year(temp_sport_list)[0:2])
+
+
     for i in range(len(temp_sport_list)):
         color = get_color(temp_sport_list[i])
-        y = []
+        y_vals = []
         sport_df = retrieve_data_frame(temp_sport_list[i])
-        if (convert_year_to_integer(sport_df['year'].iloc[-1]) > start_year_int):
-            for k in range(int(sport_df['year'].iloc[-1][0:2]) - start_year_int - 1):
-                y.append(0)
+        if (convert_year_to_integer(sport_df['year'].iloc[-1]) > start_year):
+            for k in range(int(sport_df['year'].iloc[-1][0:2]) - start_year - 1):
+                y_vals.append(0)
         for j in range(1,len(sport_df['year'].tolist())+1):
             if ((sport_df['national_championship'].iloc[-j]) == 'yes'):
-                y.append(1)
+                y_vals.append(1)
             else:
-                y.append(0)
-        plt.bar(x_vals, y, color=color, label = temp_sport_list[i])
+                y_vals.append(0)
+        plt.bar(x_vals, y_vals, color=color, label = temp_sport_list[i])
     plt.xlabel('Season', fontsize=10)
     plt.ylabel('Number of Championship Wins', fontsize=10)
     #plt.yticks([1.0],[1])
