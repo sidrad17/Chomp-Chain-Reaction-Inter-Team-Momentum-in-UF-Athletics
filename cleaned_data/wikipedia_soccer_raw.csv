@@ -1,36 +1,29 @@
-no. pos. nation player 0 gk  dom paloma peña 1 gk  usa jayden emmanuel 2 mf  usa elyse campbell 3 fw  usa tatum o'coyne 4 fw  usa megan hinnenkamp 5 gk  usa alexa goldberg 6 df  usa avery upton 7 df  usa lauren mccloskey 8 fw  usa charlotte mcclure 9 df  usa josie curtis 10 mf  usa madison jones 11 fw  usa sophie white 12 fw  usa ryleigh acosta 13 fw  swe vera blom 14 df  usa njeri butts 15 mf  usa lauren donovan 16 df  usa emilee hauser,no. pos. nation player 17 fw  usa delaney tellex 18 fw  swe liwa nilsson 19 mf  usa kaela standish 20 df  usa anna deleon 21 df  usa madison young 22 mf  usa oakley rasmussen 23 df  usa daviana vaka 24 mf  usa lucy froitzheim 25 mf  usa delaney tauzel 27 mf  usa norah abbott 28 mf  usa emma duval 29 fw  usa lena bailey 30 fw  usa amelia malkin 31 gk  usa paris bice 32 fw  usa zamiyah hill 33 df  usa skye barnes,unnamed: 2,unnamed: 3
-No.,Pos.,Nation,Player
-0,GK,DOM,Paloma Peña
-1,GK,USA,Jayden Emmanuel
-2,MF,USA,Elyse Campbell
-3,FW,USA,Tatum O'Coyne
-4,FW,USA,Megan Hinnenkamp
-5,GK,USA,Alexa Goldberg
-6,DF,USA,Avery Upton
-7,DF,USA,Lauren McCloskey
-8,FW,USA,Charlotte McClure
-9,DF,USA,Josie Curtis
-10,MF,USA,Madison Jones
-11,FW,USA,Sophie White
-12,FW,USA,Ryleigh Acosta
-13,FW,SWE,Vera Blom
-14,DF,USA,Njeri Butts
-15,MF,USA,Lauren Donovan
-16,DF,USA,Emilee Hauser
-No.,Pos.,Nation,Player
-17,FW,USA,Delaney Tellex
-18,FW,SWE,Liwa Nilsson
-19,MF,USA,Kaela Standish
-20,DF,USA,Anna DeLeon
-21,DF,USA,Madison Young
-22,MF,USA,Oakley Rasmussen
-23,DF,USA,Daviana Vaka
-24,MF,USA,Lucy Froitzheim
-25,MF,USA,Delaney Tauzel
-27,MF,USA,Norah Abbott
-28,MF,USA,Emma Duval
-29,FW,USA,Lena Bailey
-30,FW,USA,Amelia Malkin
-31,GK,USA,Paris Bice
-32,FW,USA,Zamiyah Hill
-33,DF,USA,Skye Barnes
+Season,Conference,Conference Record,Conference Ranking,Conference Ranking.1,Conference Tournament Results,Regular Season Record,Final Ranking,Post Season Results
+Season,Conference,Conference Record,Division,Overall,Conference Tournament Results,Regular Season Record,Final Ranking,Post Season Results
+1995,SEC,6-1-1,2,2,Auburn  T 0-0 v. Auburn (5-4 Auburn PKs),14-4-2,NR,Did Not Make
+1996,SEC,8-0-0,1,1,Lexington W 3-0 v. Tennessee  W 6-1 v. Auburn  W 3-2 (2OT) v. Arkansas,22-3-0,8,Gainesville  W 7-3 v. NC State  W 5-0 v. Wake Forest Chapel Hill  L 0-9 v. North Carolina
+1997,SEC,7-1-0,2,2,Gainesville W 6-0 v. Ole Miss  W 3-1 v. Georgia  W 4-2 v. Vanderbilt,20-3-1,9,Gainesville  W 3-2 v. Vanderbilt  Chapel Hill  L 0-5 v. North Carolina
+1998,SEC,8-0-0,1,1,Tuscaloosa  W 6-0 v. South Carolina  W 2-0 v. Kentucky  W 2-0 v. Vanderbilt,26-1-0,1,First round Bye Gainesville W 5-1 v. James Madison W 1-0 v. Northwestern W 3-1 v. Penn State Greensboro  W 1-0 v. Santa Clara  W 1-0 v. North Carolina
+1999,SEC,9-0-0,1,1,Nashville W 4-3 v. Arkansas  W 3-0 v. Vanderbilt  W 3-0 v. Ole Miss,21-2-0,10,First round Bye Gainesville  L 0-1 v. Hartford
+2000,SEC,9-0-0,1,1,Athens  W 4-1 v. Arkansas  W 2-1 v. Kentucky  W 2-0 v. Georgia,16-8-0,19,First round Bye Gainesville  L 1-2 v. Florida State
+2001,SEC,8-1-0,1,1,Baton Rouge  W 4-0 v. Vanderbilt  W 3-1 v. Kentucky  W 2-1 v. Auburn,21-4-1,4,Gainesville W 4-0 v. UCF  W 3-0 v. Georgia  W 3-1 v. Clemson Los Angeles  W 1-0 (2OT) v. UCLA Dallas  L 2-3 v. Santa Clara
+2002,SEC,5-3-0,2,T3,Oxford W 2-1 v. South Carolina  W 2-0 v. LSU  L 1-2 (2OT) v. Tennessee,10-10-2,NR,Did Not Make
+2003,SEC,6-2-1,2,3,Orange Beach W 3-1 v. Vanderbilt  W 4-1 v. Georgia  T 1-1 v. Tennessee (7-6 Tennessee PKs),19-4-2,8,Gainesville W 3-2 (2OT) v. UCF  W 4-3 (2OT) v. Mississippi  W 1-0 v. Tennessee  L 1-2 v. Florida State
+2004,SEC,7-2-2,2,3,Auburn  W 2-0 v. Alabama  W 3-0 v. Ole Miss  W 2-1 (2OT) v. Tennessee,16-4-3,21,Gainesville  L 2-3 v. UCF
+2005,SEC,8-2-1,T2,T3,Orange Beach L 2-1 v. Auburn,13-6-1,20,Gainesville  L 0-1 (2OT) v. Illinois
+2006,SEC,7-1-3,1,1,Orange Beach W 4-1 v. Georgia  W 2-0 v. South Carolina  L 1-2 v. Kentucky,14-6-5,10,Milwaukee  W 2-0 v. Loyola  T 0-0 v. Marquette (4-3 Florida PKs)  Los Angeles  L 2-3 v. UCLA
+2007,SEC,9-2-0,1,1,Orange Beach W 4-0 v. Kentucky  W 1-0 (2OT) v. LSU  W 4-1 v. Georgia,17-5-3,17,Gainesville  W 3-0 v. Miami  T 0-0 v. UCF (4-3 Florida PKs)  Los Angeles  L 0-1 Southern California
+2008,SEC,11-0-0,1,1,Orange Beach  W 2-1 v. Alabama  L 0-3 v. Georgia,19-4-1,10,Gainesville W 2-1 v. California  W 2-0 v. UCF L 1-2 v. Texas A&M
+2009,SEC,8-1-2,1,1,Orange Beach  W 1-0 (2OT) v. Tennessee  L 0-1 v. South Carolina,16-6-2,15,Columbus W 2-0 v. Illinois State L 0-1 (OT) v. Oregon State
+2010,SEC,9-1-1,1,1,Orange Beach  W 5-3 v. Vanderbilt  W 3-1 v. Georgia  W 1-0 v. South Carolina,19-2-3,12,Gainesville W 3-0 v. Mercer  T 0-0 v. Duke (4-2 Duke PKs)
+2011,SEC,7-4-0,T2,T3,Orange Beach W 2-0 v. Georgia  W 2-1 v. Alabama  L 2-3 v. Auburn,17-8-0,RV,Gainesville W 3-0 v. FGCU L 2-3 v. UCF
+2012,SEC,11-2-0,1,1,Orange Beach W 2-1 v. Mississippi  W 3-0 v. Missouri  W 3-0 v. Auburn,19-5-1,,Gainesville W 2-0 v. FGCU W 1-0 v. UCF L 0-2 v. Notre Dame
+2013,-SEC,9-2-0,,1,Orange Beach W 1-0 v. Arkansas  W 2-1 v. Mississippi  L 1-2 v. Texas A&M,15-3-1,,Gainesville W 2-0 v. Jacksonville Durham L 0-1 v. Duke
+2014,SEC,9-2-0,,2,Orange Beach T 1-1 v. Tennessee (Tennessee 5-4 PKs),17-4-2,,Gainesville W 3-0 v. Mercer W 3-1 v. UC Berkeley W 3-2 v. Texas Tech  Palo Alto T 2-2 v. Stanford (Stanford 4-3 PKs)
+2015,SEC,8-2-1,,1,Orange Beach W 2-1 v. Vanderbilt W 2-0 v. Auburn W 2-1 v. Texas A&M,19-4-1,6,Gainesville W 1-0 v. Western Michigan W 5-2 v. William & Mary L 1-2 v. Duke
+2016,SEC,8-3-0,,T3,Orange Beach T 3-3 v. Missouri (8-7 Florida PKs) W 1-0 v. South Carolina W 2-1 (OT) v. Arkansas,17-5-1,10,Gainesville W 3-0 v. Florida Gulf Coast W 3-2 (2OT) v. Wisconsin L 1-2 v. Auburn
+2017,SEC,7-3-0,,3,Orange Beach W 1-0 v. Auburn L 1-2 (OT) v. Texas A&M,17-7-0,,Gainesville W 3-0 v. South Alabama W 1-0 v. USF W 1-0 (2OT) v. Washington State Columbia L 0-2 v. South Carolina
+2018,SEC,4-4-2,,8,Orange Beach T 1-1 v. Auburn (Florida 2-1 PKs) W 1-0 v. Vanderbilt L 0-1 (OT) v. Arkansas,7-10-4,NR,Did not qualify
+Total,Total,188-39-15,,,44-8-5,414-120-36,,35-18-4
+,,,,,,,,
+,,,,,,,,
