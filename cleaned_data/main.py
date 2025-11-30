@@ -78,27 +78,34 @@ def comparing_all_sports():
 
 #check if it stacks
 def segmented_bar_chart():
-    temp_sport_list = ['softball','basketball','baseball','football','tennis','soccer','volleyball', "women's basketball"]
+    temp_sport_list = ['softball','basketball','baseball','soccer','volleyball', "women's basketball"]
     start_year = 1925
 
-    x_vals = []
-    for i in range (1,len(retrieve_data_frame('football')['year'].tolist())+1):
-        x_vals.append(retrieve_data_frame('football')['year'].iloc[-i])
+    football_base_list = ['football']
+    football_columns = ['sport']
+    for i in range(1, len(retrieve_data_frame('football')['national_championship'].tolist())+1):
+        if(retrieve_data_frame('football')['national_championship'].iloc[-i]=='yes'):
+            football_base_list.append(1)
+        else:
+            football_base_list.append(0)
+        football_columns.append(retrieve_data_frame('football')['year'].iloc[-i])
 
+    df = pd.DataFrame(football_base_list, columns = football_columns)
 
     for i in range(len(temp_sport_list)):
-        color = get_color(temp_sport_list[i])
-        y_vals = []
+        vals = [temp_sport_list[i]]
         sport_df = retrieve_data_frame(temp_sport_list[i])
         if (convert_year_to_integer(sport_df['year'].iloc[-1]) > start_year):
-            for k in range(int(sport_df['year'].iloc[-1][0:2]) - start_year - 1):
-                y_vals.append(0)
+            for k in range(convert_year_to_integer(sport_df['year'].iloc[-1]) - start_year - 1):
+                vals.append(0)
         for j in range(1,len(sport_df['year'].tolist())+1):
             if ((sport_df['national_championship'].iloc[-j]) == 'yes'):
-                y_vals.append(1)
+                vals.append(1)
             else:
-                y_vals.append(0)
-        plt.bar(x_vals, y_vals, color=color, label = temp_sport_list[i])
+                vals.append(0)
+        df.loc[df.size()] = vals
+
+    df.plot(kind = 'bar',stacked = True)
     plt.xlabel('Season', fontsize=10)
     plt.ylabel('Number of Championship Wins', fontsize=10)
     #plt.yticks([1.0],[1])
@@ -106,6 +113,8 @@ def segmented_bar_chart():
     #plt.xticks(['26-27','30-31','40-41','50-51','60-61','70-71','80-81','90-91','00-01','10-11','20-21'],['26-27','30-31','40-41','50-51','60-61','70-71','80-81','90-91','00-01','10-11','20-21'],fontsize = 8)
     plt.legend()
     plt.show()
+
+segmented_bar_chart()
 
 
 #option 1 graph function,
