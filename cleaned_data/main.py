@@ -43,14 +43,7 @@ def retrieve_data_frame(sport):
     #    return vb_df
 def convert_year_to_integer(year_string):
     start = year_string.split("-")[0]
-    #converts 2 digit years into 4 digit years
-    if len(start) == 4:
-        return int(start)
-    start_num = int(start)
-    if start_num <= 26:
-        return 2000 + start_num
-    else:
-        return 1900 + start_num
+    return int(start)
 
 
 def find_start_year(sport_list):
@@ -135,12 +128,7 @@ segmented_bar_chart()
 def champ_sports_comparison(champ_sport):
     pass
 
-#function for option 2 graph
-def plot_sports_records(list_of_sports):
-    print("")
-    #make option 2 graph
-
-#not done
+#make sure r analysis works, option 3 function
 def sports_correlation(sport1, sport2):
     sport1_df = retrieve_data_frame(sport1)
     sport2_df = retrieve_data_frame(sport2)
@@ -174,8 +162,8 @@ def sports_correlation(sport1, sport2):
     sport2_df = sport2_df.reset_index(drop=True)
 
     #extracts lists with each sports' win% over the years
-    win1 = list(sport1_df["win%"])
-    win2 = list(sport2_df["win%"])
+    win1 = list(sport1_df["win_loss_pct"])
+    win2 = list(sport2_df["win_loss_pct"])
 
     #converts to numpy arrays to be plotted
     x = np.array(win1)
@@ -224,7 +212,7 @@ def sports_correlation(sport1, sport2):
         print(f"With a correlation coefficient of {r:.2f}, the win percentages over time of {sport1.capitalize()} and {sport2.capitalize()} have a {strength}, {direction} correlation.")
 
 
-#option 4 graph not done
+#ensure it works when csvs are correct, option 2 function
 def compare_sports_means(sport_list):
     #loads all df into a dictionary
     sports_df = {}
@@ -267,15 +255,18 @@ def compare_sports_means(sport_list):
     for sport in sport_list:
         df = interval_df[sport]
         years = list(df["start_year"])
-        win_percentages = list(df["win%"])
+        win_percentages = list(df["win_loss_pct"])
         labels = list(df["season_label"])
 
         plt.plot(years, win_percentages, linewidth = 3, marker = "o", color = get_color(sport), label = f"{sport.capitalize()} Win Percentage")
 
-        #analysis of aroc
+        #analysis of total change over the interval
         start_win_percentages = win_percentages[0]
         end_win_percentages = win_percentages[-1]
         total_change = end_win_percentages - start_win_percentages
+
+        #analysis of how much win% changed per year on average (mean)
+        average_change = total_change / (len(win_percentages)-1)
 
         if total_change > 0:
             direction = "increased"
@@ -284,7 +275,8 @@ def compare_sports_means(sport_list):
         else:
             direction = "stayed the same"
 
-        print(f"{sport.capitalize()} win percentage {direction} by {abs(total_change):.2f} points from {labels[0]} to {labels[-1]}.")
+        print(f"{sport.capitalize()}'s win percentage {direction} by {abs(total_change):.2f} points from {labels[0]} to {labels[-1]}.")
+        print(f"{sport.capitalize()}'s win percentage {direction} by {abs(average_change):.2f} on average from year to year.")
 
     #labels for x-axis
     example_sport = sport_list[0]
@@ -325,17 +317,17 @@ while (running):
 
     elif (option == '2'):
         num_sports = int(input("Enter the number of sports to compare: "))
-        sports_list = []
-
-        for i in range(num_sports):
-            sport = input("Enter the sport for comparison: ")
-            sport = sport.lower()
-            if (check_sport_validity(sport) == False):
+        sports_means = []
+        for sport in range(num_sports):
+            selection = input("Enter the sport for comparison: ")
+            selection = selection.lower()
+            if check_sport_validity(selection) == False:
                 print("Please enter a valid sport.")
                 print("")
                 continue
-            sports_list.append(sport)
-        plot_sports_records(sports_list)
+            sports_means.append(selection)
+        compare_sports_means(sports_means)
+
 
     elif (option == '3'):
         sport1 = input("Enter your first sport: ")
@@ -351,19 +343,6 @@ while (running):
             print("")
             continue
         sports_correlation(sport1, sport2)
-
-    elif (option == '4'):
-        num_sports = int(input("Enter the number of sports to compare: "))
-        sports_means = []
-        for sport in range(num_sports):
-            selection = input("Enter the sport for comparison: ")
-            selection = selection.lower()
-            if check_sport_validity(selection) == False:
-                print("Please enter a valid sport.")
-                print("")
-                continue
-            sports_means.append(selection)
-        compare_sports_means(sports_means)
 
     elif (option == '5'):
         break
