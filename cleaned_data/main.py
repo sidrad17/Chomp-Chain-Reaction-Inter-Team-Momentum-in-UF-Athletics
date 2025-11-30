@@ -6,16 +6,15 @@ bb_df = pd.read_csv('baseball.csv')
 #test comment
 #uncomment when CSVs are available
 fb_df = pd.read_csv('football.csv')
-#gym_df = pd.read_csv('gymnastics.csv')
 #ten_df = pd.read_csv('tennis.csv')
-#wten_df = pd.read_csv('womenstennis.csv')
+#wten_df = pd.read_csv('womens_tennis.csv')
 bk_df = pd.read_csv('basketball.csv')
-#wbk_df = pd.read_csv('womensbasketball.csv')
-#soc_df = pd.read_csv('soccer.csv')
-#vb_df = pd.read_csv('volleyball.csv')
+wbk_df = pd.read_csv('womens_basketball.csv')
+soc_df = pd.read_csv('soccer.csv')
+vb_df = pd.read_csv('volleyball.csv')
 
 def check_sport_validity(sport):
-    if (sport!= "football" and sport!= "basketball" and sport!= "baseball" and sport!= "softball" and sport!= "women's basketball" and sport!= "tennis" and sport!= "women's tennis" and sport!= "soccer" and sport!= "gymnastics" and sport!= "volleyball"):
+    if (sport!= "football" and sport!= "basketball" and sport!= "baseball" and sport!= "softball" and sport!= "women's basketball" and sport!= "women's tennis" and sport!= "soccer"  and sport!= "volleyball"):
         return False
     return True
 
@@ -27,20 +26,19 @@ def retrieve_data_frame(sport):
     #uncomment as dataframes become available
     elif sport == 'football':
        return fb_df
-    #elif sport == 'gymnastics':
-    #   return gym_df
     #elif sport == 'tennis':
-    #   return ten_df
+       #return ten_df
     #elif sport == "women's tennis":
     #   return wten_df
     elif sport == 'basketball':
         return bk_df
-    #elif sport == "women's basketball":
-    #    return wbk_df
-    #elif sport == 'soccer':
-    #    return soc_df
-    #elif sport == "volleyball":
-    #    return vb_df
+    elif sport == "women's basketball":
+        return wbk_df
+    elif sport == 'soccer':
+        return soc_df
+    elif sport == "volleyball":
+        return vb_df
+
 def convert_year_to_integer(year_string):
     start = year_string.split("-")[0]
     return int(start)
@@ -64,8 +62,6 @@ def get_color(sport):
         return 'green'
     elif sport == 'football':
         return 'orange'
-    elif sport == 'gymnastics':
-        return 'purple'
     elif sport == 'tennis':
         return 'red'
     elif sport == "women's tennis":
@@ -77,16 +73,16 @@ def get_color(sport):
     elif sport == 'soccer':
         return 'gray'
     elif sport == "volleyball":
-        return 'brown'
+        return 'purple'
 
 #not done
-def first_graph():
+def comparing_all_sports():
     #complete_sport_list = ['football', 'basketball','softball','baseball','gymnastics','volleyball','tennis',"women's tennis",'soccer',"women's basketball"]
     #start_year = find_start_year(complete_sport_list)
-    temp_sport_list = ['softball','basketball','baseball','football']
+    temp_sport_list = ['softball','basketball','baseball','football','tennis','soccer','volleyball']
     for i in range (len(temp_sport_list)):
         sport_df = retrieve_data_frame(temp_sport_list[i])
-        sport_df.plot(x ='year',y = 'win%')
+        sport_df.plot(x ='year',y = 'win_loss_pct')
     plt.title(f'Win/Loss Records of Florida Gators Sports from 1906 to Present')
     plt.xlabel('Season', fontsize = 18)
     plt.ylabel('Record Percentage', fontsize = 18)
@@ -95,7 +91,9 @@ def first_graph():
 
 #check if it stacks
 def segmented_bar_chart():
-    temp_sport_list = ['softball','basketball','baseball','football']
+    temp_sport_list = ['softball','basketball','baseball','football','tennis','soccer','volleyball', "women's basketball"]
+    start_year = 1925
+
     x = (retrieve_data_frame('baseball'))['year'].tolist()
     x_vals = []
     for i in range (1,len(retrieve_data_frame('football')['year'].tolist())+1):
@@ -122,7 +120,6 @@ def segmented_bar_chart():
     plt.legend()
     plt.show()
 
-segmented_bar_chart()
 
 #option 1 graph function,
 def champ_sports_comparison(champ_sport):
