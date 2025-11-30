@@ -284,8 +284,7 @@ while (running):
     print("1. Compare all sports with the championship season of one sport")
     print("2. Compare specific sports records")
     print("3. Find the correlation between two sports")
-    print("4. Compare AROC of records over a specific period")
-    print("5. Exit")
+    print("4. Exit")
     option = input("Type in a number to select an option: ")
 
     if (option == '1'):
@@ -328,7 +327,7 @@ while (running):
             continue
         sports_correlation(sport1, sport2)
 
-    elif (option == '5'):
+    elif (option == '4'):
         break
 
     else:
