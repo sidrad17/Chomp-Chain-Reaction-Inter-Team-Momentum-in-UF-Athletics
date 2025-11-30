@@ -114,12 +114,58 @@ def segmented_bar_chart():
     plt.legend()
     plt.show()
 
-segmented_bar_chart()
+#segmented_bar_chart()
 
 
 #option 1 graph function,
 def champ_sports_comparison(champ_sport):
-    pass
+    # complete_sport_list = ['football', 'basketball','softball','baseball','gymnastics','volleyball','tennis',"women's tennis",'soccer',"women's basketball"]
+    temp_sport_list = ['softball', 'basketball', 'baseball', 'soccer', 'volleyball', "women's basketball", 'football']
+
+    sports_df = {}
+    for sport in temp_sport_list:
+        df = retrieve_data_frame(sport)
+        df["start_year"] = df["year"].apply(convert_year_to_integer)
+        df["season_label"] = df["year"]
+        sports_df[sport] = df
+
+    #get championship years from the selected sport
+    champion_df = sports_df[champ_sport]
+    championship_years = set(champion_df.loc[champion_df["national_championship"] == "yes", "start_year"])
+    if not championship_years:
+        print(f"{champ_sport.capitalize()} has no championship seasons in this dataset.")
+        return
+
+    #filters years of all other sports to match championship years
+    comparison_dfs = {}
+    for sport, df in sports_df.items():
+        if sport != champ_sport:
+            filtered = df[df["start_year"].isin(championship_years)]
+            comparison_dfs[sport] = filtered.sort_values("start_year")
+
+    #plot
+    plt.figure(figsize=(10, 8))
+
+    #uses given championship sport for x-axis
+    champ_df = sports_df[champ_sport]
+    champ_df = champ_df[champ_df["start_year"].isin(championship_years)]
+    x_vals = list(champ_df["start_year"])
+    x_labels = list(champ_df["season_label"])
+
+    #plots all other sports' win%
+    for sport, df in comparison_dfs.items():
+        years = list(df["start_year"])  # numeric spacing
+        win_pct = list(df["win_loss_pct"])
+        sport_color = get_color(sport)
+        plt.scatter(years, win_pct, s=120, color = sport_color, label=f"{sport.capitalize()} Win %")
+
+    plt.xticks(x_vals, x_labels)
+    plt.xlabel("Football Championship Season")
+    plt.ylabel("Win Percentage")
+    plt.title(f"Win Percentage Across UF Sports During {champ_sport.capitalize()} Championship Seasons")
+    plt.legend()
+    plt.show()
+
 
 #make sure r analysis works, option 3 function
 def sports_correlation(sport1, sport2):
@@ -209,10 +255,9 @@ def compare_sports_means(sport_list):
     sports_df = {}
     for sport in sport_list:
         df = retrieve_data_frame(sport)
-        for season in df["year"]:
-            df["start_year"] = [convert_year_to_integer(season)]
-            df["season_label"] = df["year"]
-            sports_df[sport] = df
+        df["start_year"] = df["year"].apply(convert_year_to_integer)
+        df["season_label"] = df["year"]
+        sports_df[sport] = df
 
     #determines valid year range
     all_years = set()
@@ -245,8 +290,9 @@ def compare_sports_means(sport_list):
         sport_interval_dfs[sport] = interval_df
 
     # Determine overlapping seasons
+    year_sets = []
     for df in sport_interval_dfs.values():
-        year_sets = set(df["start_year"])
+        year_sets.append(set(df["start_year"]))
     shared_years = sorted(set.intersection(*year_sets))
 
     if not shared_years:
@@ -290,7 +336,7 @@ def compare_sports_means(sport_list):
         else:
             direction = "stayed the same"
 
-        print(f"{sport.capitalize()}'s win percentage {direction} by {abs(total_change):.2f} points from {labels[0]} to {labels[-1]}.")
+        print(f"{sport.capitalize()}'s win percentage {direction} by {abs(total_change):.2f} points from the {labels[0]} season to the {labels[-1]} season.")
         print(f"{sport.capitalize()}'s win percentage {direction} by {abs(average_change):.2f} on average from year to year.")
 
     #labels for x-axis
@@ -298,10 +344,10 @@ def compare_sports_means(sport_list):
     plt.xticks(interval_df[example_sport]["start_year"], interval_df[example_sport]["season_label"])
 
     #title
-    for sport in sport_list:
-        sports_names_formatted = ", ".join(sport.capitalize())
-    year_range = f"{start_year_input}-{end_year_input}"
-    full_title = f"Performance Trends: {sports_names_formatted}\n {year_range}"
+    sports_names_formatted = ", ".join([sport.capitalize() for sport in sport_list])
+    labels = list(df["season_label"])
+    year_range = f"{labels[0]} Season to {labels[-1]} Season"
+    full_title = f"Performance Trends: {sports_names_formatted}\n{year_range}"
     plt.title(full_title)
 
     plt.xlabel("Season")
@@ -325,9 +371,7 @@ while (running):
             print("Please enter a valid sport.")
             print("")
             continue
-        champ_df = retrieve_data_frame(champ_sport)
-        champ_color = get_color(champ_sport)
-        #make graphs
+        champ_sports_comparison(champ_sport)
 
     elif (option == '2'):
         num_sports = int(input("Enter the number of sports to compare: "))
