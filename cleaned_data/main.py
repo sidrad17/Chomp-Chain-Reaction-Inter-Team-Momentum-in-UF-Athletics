@@ -203,8 +203,6 @@ def sports_correlation(sport1, sport2):
             strenth = "moderate"
         elif abs(r) > 0 and abs(r) < .3:
             strength = "weak"
-        elif abs(r) == 0:
-            strength = "none"
 
         print(f"With a correlation coefficient of {r:.2f}, the win percentages over time of {sport1.capitalize()} and {sport2.capitalize()} have a {strength}, {direction} correlation.")
 
@@ -220,9 +218,29 @@ def compare_sports_means(sport_list):
             df["season_label"] = df["year"]
             sports_df[sport] = df
 
+    #determines valid year range
+    all_years = set()
+    for df in sports_df.values():
+        all_years.update(df["start_year"])
+    min_year = min(all_years)
+    max_year = max(all_years)
+
     #user selects interval to analyze over
-    start_year_input = int(input("Start Year: "))
-    end_year_input = int(input("End Year: "))
+    try:
+        start_year_input = int(input("Start Year: "))
+        end_year_input = int(input("End Year: "))
+
+        if start_year_input < min_year or end_year_input > max_year:
+            print(f"Years must be between {min_year} and {max_year}.")
+            return
+
+        if start_year_input > end_year_input:
+            print("Start year must be before end year.")
+            return
+
+    except ValueError:
+        print("Please enter valid integer years.")
+        return
 
     # Filters dfs to selected interval
     sport_interval_dfs = {}
@@ -240,9 +258,13 @@ def compare_sports_means(sport_list):
         return
 
     #ensures only shared years are being evaluated
+    filtered_df = {}
+    interval_df = {}
     for sport, df in sports_df.items():
+        # Filter by shared years
         filtered_df[sport] = df[df["start_year"].isin(shared_years)]
-        sorted_df = filtered_df.sort_values("start_year")
+        # Sort the filtered DataFrame for specific sport
+        sorted_df = filtered_df[sport].sort_values("start_year")
         interval_df[sport] = sorted_df
 
     #plot graph
@@ -294,7 +316,7 @@ def compare_sports_means(sport_list):
 
 running = True
 while (running):
-    print("1. Compare all sports with the championship season of one sport")
+    print("1. Compare all sports with the championship seasons of one sport")
     print("2. Compare specific sports records")
     print("3. Find the correlation between two sports")
     print("4. Compare AROC of records over a specific period")
@@ -302,7 +324,7 @@ while (running):
     option = input("Type in a number to select an option: ")
 
     if (option == '1'):
-        champ_sport = input("Enter the sport for comparison: ")
+        champ_sport = input("Enter the championship sport for comparison: ")
         champ_sport = champ_sport.lower()
         if (check_sport_validity(champ_sport) == False):
             print("Please enter a valid sport.")
@@ -324,7 +346,6 @@ while (running):
                 continue
             sports_means.append(selection)
         compare_sports_means(sports_means)
-
 
     elif (option == '3'):
         sport1 = input("Enter your first sport: ")
