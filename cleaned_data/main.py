@@ -7,9 +7,9 @@ bb_df = pd.read_csv('baseball.csv')
 #uncomment when CSVs are available
 fb_df = pd.read_csv('football.csv')
 ten_df = pd.read_csv('tennis.csv')
-#wten_df = pd.read_csv('womenstennis.csv')
+#wten_df = pd.read_csv('womens_tennis.csv')
 bk_df = pd.read_csv('basketball.csv')
-wbk_df = pd.read_csv('womensbasketball.csv')
+wbk_df = pd.read_csv('womens_basketball.csv')
 soc_df = pd.read_csv('soccer.csv')
 vb_df = pd.read_csv('volleyball.csv')
 
