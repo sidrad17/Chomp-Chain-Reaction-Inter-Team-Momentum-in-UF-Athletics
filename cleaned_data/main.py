@@ -64,87 +64,7 @@ def get_color(sport):
 
 #not done
 def comparing_all_sports():
-    temp_sport_list = ['baseball', 'softball', "women's basketball", 'volleyball', 'basketball', 'football']
-    sports_df = {}
-    for sport in temp_sport_list:
-        df = retrieve_data_frame(sport)
-        for season in df["year"]:
-            df["start_year"] = [convert_year_to_integer(season)]
-            df["season_label"] = df["year"]
-            sports_df[sport] = df
-
-    # determines valid year range
-    all_years = set()
-    for df in sports_df.values():
-        all_years.update(df["start_year"])
-    min_year = min(all_years)
-    max_year = max(all_years)
-
-
-    # Filters dfs to selected interval
-    sport_interval_dfs = {}
-    for sport, df in sports_df.items():
-        interval_df = df[(df["start_year"] >= min_year) & (df["start_year"] <= max_year)]
-        sport_interval_dfs[sport] = interval_df
-
-    # Determine overlapping seasons
-    for df in sport_interval_dfs.values():
-        year_sets = set(df["start_year"])
-    shared_years = sorted(set.intersection(*year_sets))
-
-    # ensures only shared years are being evaluated
-    filtered_df = {}
-    interval_df = {}
-    for sport, df in sports_df.items():
-        # Filter by shared years
-        filtered_df[sport] = df[df["start_year"].isin(shared_years)]
-        # Sort the filtered DataFrame for specific sport
-        sorted_df = filtered_df[sport].sort_values("start_year")
-        interval_df[sport] = sorted_df
-
-    # plot graph
-    plt.figure(figsize=(10, 10))
-
-    # basic info needed for plotting (years, win%s, labels)
-    for sport in temp_sport_list:
-        df = interval_df[sport]
-        years = list(df["start_year"])
-        win_percentages = list(df["win_loss_pct"])
-        labels = list(df["season_label"])
-
-        plt.plot(years, win_percentages, linewidth=3, marker="o", color=get_color(sport),
-                 label=f"{sport.capitalize()} Win Percentage")
-
-        # analysis of total change over the interval
-        start_win_percentages = win_percentages[0]
-        end_win_percentages = win_percentages[-1]
-        total_change = end_win_percentages - start_win_percentages
-
-        # analysis of how much win% changed per year on average (mean)
-        average_change = total_change / (len(win_percentages) - 1)
-
-        if total_change > 0:
-            direction = "increased"
-        elif total_change < 0:
-            direction = "decreased"
-        else:
-            direction = "stayed the same"
-
-        print(
-            f"{sport.capitalize()}'s win percentage {direction} by {abs(total_change):.2f} points from {labels[0]} to {labels[-1]}.")
-        print(
-            f"{sport.capitalize()}'s win percentage {direction} by {abs(average_change):.2f} on average from year to year.")
-
-    # labels for x-axis
-    #example_sport = temp_sport_list[0]
-    plt.xticks(interval_df[example_sport]["start_year"], interval_df[example_sport]["season_label"])
-
-
-    plt.xlabel("Season")
-    plt.ylabel("Win Percentage")
-    plt.legend()
-    plt.show()
-
+    return 0
 
 def segmented_bar_plot():
     temp_sport_list = ['baseball','softball',"women's basketball",'volleyball','basketball','football']
@@ -187,7 +107,7 @@ def segmented_bar_plot():
     plt.legend()
     plt.show()
 
-segmented_bar_plot()
+#segmented_bar_plot()
 
 #option 1 graph function,
 def champ_sports_comparison(champ_sport):
