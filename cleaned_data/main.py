@@ -66,6 +66,7 @@ def get_color(sport):
 def comparing_all_sports():
     return 0
 
+#change colors
 def stacked_bar_plot():
     xticks = [0]
     xticklabels = ['1925-1926']
