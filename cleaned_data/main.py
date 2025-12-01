@@ -168,7 +168,7 @@ def champ_sports_comparison(champ_sport):
         plt.scatter(years, win_pct, s=120, color = get_color(sport), label=f"{sport.capitalize()} Win %")
 
     plt.xticks(x_positions, x_labels)
-    plt.xlabel(f"{champ_sport} Championship Season")
+    plt.xlabel(f"{champ_sport.capitalize()} Championship Season")
     plt.ylabel("Win Percentage")
     plt.title(f"Win Percentage Across UF Sports During {champ_sport.capitalize()} Championship Seasons")
     plt.legend()
