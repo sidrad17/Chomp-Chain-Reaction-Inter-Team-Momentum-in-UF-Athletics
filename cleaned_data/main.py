@@ -6,7 +6,7 @@ bb_df = pd.read_csv('baseball.csv')
 #uncomment when CSVs are available
 fb_df = pd.read_csv('football.csv')
 #ten_df = pd.read_csv('tennis.csv')
-#wten_df = pd.read_csv('womens_tennis.csv')
+wten_df = pd.read_csv('womens_tennis.csv')
 bk_df = pd.read_csv('basketball.csv')
 wbk_df = pd.read_csv('womens_basketball.csv')
 soc_df = pd.read_csv('soccer.csv')
@@ -27,8 +27,8 @@ def retrieve_data_frame(sport):
        return fb_df
     #elif sport == 'tennis':
        #return ten_df
-    #elif sport == "women's tennis":
-    #   return wten_df
+    elif sport == "women's tennis":
+       return wten_df
     elif sport == 'basketball':
         return bk_df
     elif sport == "women's basketball":
@@ -64,57 +64,55 @@ def get_color(sport):
 
 #not done
 def comparing_all_sports():
-    #complete_sport_list = ['football', 'basketball','softball','baseball','gymnastics','volleyball','tennis',"women's tennis",'soccer',"women's basketball"]
-    #start_year = find_start_year(complete_sport_list)
-    temp_sport_list = ['softball','basketball','baseball','football','tennis','soccer','volleyball']
-    for i in range (len(temp_sport_list)):
+    return 0
+
+#change colors
+def stacked_bar_plot():
+    xticks = [0]
+    xticklabels = ['1925-1926']
+    temp_sport_list = ['baseball','softball',"women's basketball",'volleyball','basketball','football',"women's tennis",'soccer']
+    start_year = 1926
+
+    base_list = ['1925-1926']
+    columns = ['season']
+    for i in range(0,len(temp_sport_list)):
         sport_df = retrieve_data_frame(temp_sport_list[i])
-        sport_df.plot(x ='year',y = 'win_loss_pct')
-    plt.title(f'Win/Loss Records of Florida Gators Sports from 1906 to Present')
-    plt.xlabel('Season', fontsize = 18)
-    plt.ylabel('Record Percentage', fontsize = 18)
-    plt.show()
+        base_list.append(0)
+        columns.append(temp_sport_list[i])
+    df = pd.DataFrame([base_list], columns=columns)
+    num_rows = 1
 
-
-#check if it stacks
-def segmented_bar_chart():
-    temp_sport_list = ['softball','basketball','baseball','soccer','volleyball', "women's basketball"]
-    start_year = 1925
-
-    football_base_list = ['football']
-    football_columns = ['sport']
-    for i in range(1, len(retrieve_data_frame('football')['national_championship'].tolist())+1):
-        if(retrieve_data_frame('football')['national_championship'].iloc[-i]=='yes'):
-            football_base_list.append(1)
-        else:
-            football_base_list.append(0)
-        football_columns.append(retrieve_data_frame('football')['year'].iloc[-i])
-
-    df = pd.DataFrame(football_base_list, columns = football_columns)
-
-    for i in range(len(temp_sport_list)):
-        vals = [temp_sport_list[i]]
-        sport_df = retrieve_data_frame(temp_sport_list[i])
-        if (convert_year_to_integer(sport_df['year'].iloc[-1]) > start_year):
-            for k in range(convert_year_to_integer(sport_df['year'].iloc[-1]) - start_year - 1):
-                vals.append(0)
-        for j in range(1,len(sport_df['year'].tolist())+1):
-            if ((sport_df['national_championship'].iloc[-j]) == 'yes'):
+    for i in range(2,len(retrieve_data_frame('football')['national_championship'].tolist())+1):
+        vals = [retrieve_data_frame('football')['year'].iloc[-i]]
+        if int(retrieve_data_frame('football')['year'].iloc[-i][3])==5:
+            xticks.append(i-1)
+            xticklabels.append(retrieve_data_frame('football')['year'].iloc[-i])
+        for j in range(0,len(temp_sport_list)):
+            sport_df = retrieve_data_frame(temp_sport_list[j])
+            df_start_year = convert_year_to_integer(sport_df['year'].iloc[-1])
+            if df_start_year > start_year:
+                if i <= df_start_year - start_year:
+                    vals.append(0)
+                else:
+                    if retrieve_data_frame(temp_sport_list[j])['national_championship'].iloc[-i+(convert_year_to_integer(sport_df['year'].iloc[-1]) - start_year)+1] == 'yes':
+                        vals.append(1)
+                    else:
+                        vals.append(0)
+            elif retrieve_data_frame(temp_sport_list[j])['national_championship'].iloc[-i] == 'yes':
                 vals.append(1)
             else:
                 vals.append(0)
-        df.loc[df.size()] = vals
+        df.loc[num_rows] = vals
+        num_rows += 1
 
-    df.plot(kind = 'bar',stacked = True)
+    df.plot(kind='bar', stacked=True)
     plt.xlabel('Season', fontsize=10)
-    plt.ylabel('Number of Championship Wins', fontsize=10)
-    #plt.yticks([1.0],[1])
-    plt.title('Champsionship Wins per Year')
-    #plt.xticks(['26-27','30-31','40-41','50-51','60-61','70-71','80-81','90-91','00-01','10-11','20-21'],['26-27','30-31','40-41','50-51','60-61','70-71','80-81','90-91','00-01','10-11','20-21'],fontsize = 8)
-    plt.legend()
+    plt.ylabel('Number of Championship', fontsize=10)
+    plt.yticks([0,1,2],[0,1,2])
+    plt.title('Championship Wins per Year Over 100 Years')
+    plt.xticks(xticks,xticklabels,fontsize=6, rotation=0)
     plt.show()
-
-#segmented_bar_chart()
+    #['1925-1926','1930-1931','1940-1941','1950-1951','1960-1961','1970-1971','1980-1981','1990-1991','2000-2001','2010-2011','2020-2021','2025-2026']
 
 
 #option 1 graph function,
@@ -362,37 +360,39 @@ def compare_sports_means(sport_list):
     plt.legend()
     plt.show()
 
+stacked_bar_plot()
+print("Welcome to the Chomp Chain Reaction Data Analyzer!")
 running = True
-while (running):
+while running:
     print("1. Compare the win percentages of all sports during a specific sport's championship seasons")
     print("2. Compare the average rate of change and total change of sports' win percentages over a specific interval")
     print("3. Find the correlation between two sports' win percentages")
     print("4. Exit")
     option = input("Type in a number to select an option: ")
 
-    if (option == '1'):
+    if option == '1':
         champ_sport = input("Enter the championship sport for comparison: ")
         champ_sport = champ_sport.lower()
-        if (check_sport_validity(champ_sport) == False):
+        if check_sport_validity(champ_sport) == False:
             print("Please enter a valid sport.")
             print("")
             continue
         champ_sports_comparison(champ_sport)
 
-    elif (option == '2'):
+    elif option == '2':
         num_sports = int(input("Enter the number of sports to compare: "))
         sports_means = []
         for sport in range(num_sports):
             selection = input("Enter a sport for comparison: ")
             selection = selection.lower()
-            if check_sport_validity(selection) == False:
+            if(check_sport_validity(selection) == False):
                 print("Please enter a valid sport.")
                 print("")
                 continue
             sports_means.append(selection)
         compare_sports_means(sports_means)
 
-    elif (option == '3'):
+    elif option == '3':
         sport1 = input("Enter the first sport for comparison: ")
         sport1 = sport1.lower()
         if(check_sport_validity(sport1) == False):
@@ -407,7 +407,7 @@ while (running):
             continue
         sports_correlation(sport1, sport2)
 
-    elif (option == '4'):
+    elif option == '4':
         break
 
     else:

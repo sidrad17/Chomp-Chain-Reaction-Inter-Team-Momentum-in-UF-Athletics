@@ -1,7 +1,4 @@
 import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-
 sb_df = pd.read_csv('softball.csv')
 bb_df = pd.read_csv('baseball.csv')
 #uncomment when CSVs are available
@@ -21,7 +18,6 @@ def check_sport_validity(sport):
     return True
 
 def find_start_year(sport_list):
-    return True
 
 def retrieve_data_frame(sport):
     if sport == 'softball':
@@ -45,72 +41,60 @@ def retrieve_data_frame(sport):
     #elif sport == "volleyball":
     #    return vb_d
 
+def get_color(sport):
+    if sport == 'softball':
+        return 'olive'
+    elif sport == 'baseball':
+        return 'green'
+    elif sport == 'football':
+        return 'orange'
+    elif sport == 'gymnastics':
+        return 'purple'
+    elif sport == 'tennis':
+        return 'red'
+    elif sport == "women's tennis":
+        return 'pink'
+    elif sport == 'basketball':
+        return 'blue'
+    elif sport == "women's basketball":
+        return 'cyan'
+    elif sport == 'soccer':
+        return 'gray'
+    elif sport == "volleyball":
+        return 'brown'
 
-def convert_year_to_integer(year_string):
-    return int(year_string.split("-")[0])
-
-#function for option 2 graph
-def plot_sports_records(list_of_sports):
-    #make option 2 graph
-
-def sports_correlation(sport1, sport2):
-    """Computes the correlation coefficient between two UF sports' win percentages.
-    Produces:
-        - Scatter plot (sport 1 win% vs. sport 2 win%)
-        - Best fit regression line
-        """
-    sport1_df = retrieve_data_frame(sport1)
-    sport2_df = retrieve_data_frame(sport2)
-
-    #Converts csv years to integers to work with in the graph
-    integer_years_df1 = []
-    for season in sport1_df["year"]:
-        converted = convert_year_to_integer(season)
-        integer_years_df1.append(converted)
-    sport1_df["integer_years"] = integer_years_df1
-
-    integer_years_df2 = []
-    for season in sport2_df["year"]:
-        converted = convert_year_to_integer(season)
-        integer_years_df2.append(converted)
-    sport2_df["integer_years"] = integer_years_df2
-
-    #determines the shared start year between the two sports, and considers everything that year and beyond
-    shared_start_year = find_start_year([sport1_df, sport2_df])
-    sport1_df = sport1_df[sport1_df["integer_years"] >= shared_start_year]
-    sport2_df = sport2_df[sport2_df["integer_years"] >= shared_start_year]
-
-    #extracts lists with each sports' win% over the years
-    win1 = list(sport1_df["win%"])
-    win2 = list(sport2_df["win%"])
-
-    #converts to numpy arrays to be plotted
-    x = np.array(win1)
-    y = np.array(win2)
-
-    #computes correlation coefficient
-    r = np.corrcoef(x,y)[0,1]
-    #computes line of best fit
-    mean_x = np.mean(x)
-    mean_y = np.mean(y)
-    m = np.sum((x - mean_x)*(y - mean_y)) / np.sum((x - mean_x)**2)
-    b = mean_y - (m * mean_x)
-    best_fit = m * x + b
-
-    plt.figure(figsize=(10,10)) #we can change this, I just put in a random scale for now
-    plt.scatter(x, y, color = "blue", label = "Win Percentage Data Points")
-    plt.plot(x, best_fit, color = "red", label = "Line of Best Fit")
-
-    plt.xlabel(f"{sport1.capitalize()} Win Percentage")
-    plt.ylabel(f"{sport2.capitalize()} Win Percentage")
-    plt.title(f"{sport1.capitalize()} vs. {sport2.capitalize()}\n Correlation Coefficient: {r}")
-    plt.legend()
+def first_graph():
+    #complete_sport_list = ['football', 'basketball','softball','baseball','gymnastics','volleyball','tennis',"women's tennis",'soccer',"women's basketball"]
+    #start_year = find_start_year(complete_sport_list)
+    temp_sport_list = ['softball']
+    for i in range (len(temp_sport_list)):
+        sport_df = retrieve_data_frame(temp_sport_list[i])
+        sport_df.plot(x ='year',y = 'win%')
+    plt.title(f'Win/Loss Records of Florida Gators Sports from 1906 to Present')
+    plt.xlabel('Season', fontsize = 18)
+    plt.ylabel('Record Percentage', fontsize = 18)
     plt.show()
 
+def segmented_bar_chart():
+    temp_sport_list = ['softball','baseball']
+    x = (retrieve_data_frame('baseball'))['year'].tolist()
+    start_year_int = int(find_start_year(temp_sport_list)[0:2])
+    for i in range (len(temp_sport_list)):
+        color = get_color(temp_sport_list[i])
+        y = []
+        sport_df = retrieve_data_frame(temp_sport_list[i])
+        if(int(sport_df['year'].iloc[-1][0:2]) > start_year_int):
+            for i in range(int(sport_df['year'].iloc[-1][0:2]) - start_year_int):
+                y.append(0)
+        for j in range (len(retrieve_data_frame(temp_sport_list[i])['year'].tolist())):
+            if ((sport_df['national_championship'].iloc[j]) == 'yes'):
+                y.append(1)
+            else:
+                y.append(0)
+        plt.bar(x,y, color = color)
+    plt.show()
 
-
-def compare_sports_means(list_of_sports):
-    #make graphs and compare mean values, option 4
+segmented_bar_chart()
 
 running = True
 while (running):
@@ -132,19 +116,8 @@ while (running):
         #make graphs
 
     elif (option == '2'):
-        num_sports = int(input("Enter the number of sports to compare: "))
-        sports_list = []
-
-        for i in range(num_sports):
-            sport = input("Enter the sport for comparison: ")
-            sport = sport.lower()
-            if (check_sport_validity(sport) == False):
-                print("Please enter a valid sport.")
-                print("")
-                continue
-            sports_list.append(sport)
-        plot_sports_records(sports_list)
-        #print('2')
+        #parse through string
+        print('2')
 
     elif (option == '3'):
         sport1 = input("Enter your first sport: ")
@@ -159,27 +132,14 @@ while (running):
             print("Please enter a valid sport.")
             print("")
             continue
-        sports_correlation(sport1, sport2)
-        #sport1_df = retrieve_data_frame(sport1)
-        #sport2_df = retrieve_data_frame(sport2)
+        sport1_df = retrieve_data_frame(sport1)
+        sport2_df = retrieve_data_frame(sport2)
         #find start years
         #make graph
         #print correlation coefficient
         #make specific observation???
 
     elif (option == '4'):
-        num_sports = int(input("Enter the number of sports to compare: "))
-        sports_list = []
-
-        for i in range(num_sports):
-            sport = input("Enter the sport for comparison: ")
-            sport = sport.lower()
-            if (check_sport_validity(sport) == False):
-                print("Please enter a valid sport.")
-                print("")
-                continue
-            sports_list.append(sport)
-        compare_sports_means(sports_list)
         print("4.")
         #just added the print statement so there wouldn't be an error
         #idk if we wanted to be able to compare just two sports or a bunch so I figured I'd leave input up to you
