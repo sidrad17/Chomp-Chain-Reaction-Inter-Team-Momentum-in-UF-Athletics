@@ -118,6 +118,17 @@ def normalize_to_yyyy_yyyy(s):
     
     return s
 
+def adjust_spring_sport_year(year_str):
+    """Adjust year format for spring sports by subtracting 1 from both years.
+    For example, 2025-2026 becomes 2024-2025."""
+    year_str = str(year_str).strip()
+    m = re.match(r'(\d{4})-(\d{4})$', year_str)
+    if m:
+        year1 = int(m.group(1))
+        year2 = int(m.group(2))
+        return f'{year1 - 1}-{year2 - 1}'
+    return year_str
+
 def filter_last_100_years(df):
     """Filter to only include seasons from 1925 onwards"""
     if df.empty or 'year' not in df.columns:
@@ -481,6 +492,8 @@ if baseball_dfs:
         cleaned_baseball = clean_wikipedia(baseball_raw, 'baseball', championship_years=[2017])
         cleaned_baseball = filter_last_100_years(cleaned_baseball)
         if not cleaned_baseball.empty:
+            # Adjust years for spring sport (subtract 1 from both years)
+            cleaned_baseball['year'] = cleaned_baseball['year'].apply(adjust_spring_sport_year)
             cleaned_baseball.to_csv(f'{OUTPUT_DIR}/baseball.csv', index=False)
             print(f'✓ Baseball: {len(cleaned_baseball)} seasons | {cleaned_baseball["year"].min()} → {cleaned_baseball["year"].max()}')
             print(f'  Championships: {(cleaned_baseball["national_championship"] == "yes").sum()}')
@@ -495,6 +508,8 @@ if softball_dfs:
         cleaned_softball = clean_wikipedia(softball_raw, 'softball', championship_years=[2014, 2015])
         cleaned_softball = filter_last_100_years(cleaned_softball)
         if not cleaned_softball.empty:
+            # Adjust years for spring sport (subtract 1 from both years)
+            cleaned_softball['year'] = cleaned_softball['year'].apply(adjust_spring_sport_year)
             cleaned_softball.to_csv(f'{OUTPUT_DIR}/softball.csv', index=False)
             print(f'✓ Softball: {len(cleaned_softball)} seasons | {cleaned_softball["year"].min()} → {cleaned_softball["year"].max()}')
             print(f'  Championships: {(cleaned_softball["national_championship"] == "yes").sum()}')
