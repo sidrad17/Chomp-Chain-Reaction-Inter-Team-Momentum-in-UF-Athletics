@@ -111,7 +111,63 @@ def segmented_bar_plot():
 
 #option 1 graph function,
 def champ_sports_comparison(champ_sport):
-    pass
+    # complete_sport_list = ['football', 'basketball','softball','baseball','gymnastics','volleyball','tennis',"women's tennis",'soccer',"women's basketball"]
+    temp_sport_list = ['softball', 'basketball', 'baseball', 'soccer', 'volleyball', "women's basketball", 'football']
+
+    sports_df = {}
+    for sport in temp_sport_list:
+        df = retrieve_data_frame(sport)
+        df["start_year"] = df["year"].apply(convert_year_to_integer)
+        df["season_label"] = df["year"]
+        sports_df[sport] = df
+
+    #get championship years from the selected sport
+    champion_df = sports_df[champ_sport]
+    championship_years = set(champion_df.loc[champion_df["national_championship"] == "yes", "start_year"])
+    if not championship_years:
+        print(f"{champ_sport.capitalize()} has no championship seasons in this dataset.")
+        return
+
+    #filters years of all other sports to match championship years
+    comparison_dfs = {}
+    for sport, df in sports_df.items():
+        if sport != champ_sport:
+            filtered = df[df["start_year"].isin(championship_years)]
+            comparison_dfs[sport] = filtered.sort_values("start_year")
+
+    #plot
+    plt.figure(figsize=(10, 8))
+
+    #uses given championship sport for x-axis
+    champ_df = sports_df[champ_sport]
+    champ_df = champ_df[champ_df["start_year"].isin(championship_years)]
+    champ_df = champ_df.sort_values("start_year")
+    x_labels = list(champ_df["season_label"])
+    x_positions = list(range(len(x_labels)))
+
+    #plots all other sports' win%
+    year_to_pos = {}
+    position = 0
+    for year in champ_df["start_year"]:
+        year_to_pos[year] = position
+        position += 1
+
+    # Plot each sport
+    for sport, df in comparison_dfs.items():
+        years = []
+        for year in df["start_year"]:
+            years.append(year_to_pos[year])
+
+        win_pct = df["win_loss_pct"].tolist()
+        plt.scatter(years, win_pct, s=120, color = get_color(sport), label=f"{sport.capitalize()} Win %")
+
+    plt.xticks(x_positions, x_labels)
+    plt.xlabel(f"{champ_sport} Championship Season")
+    plt.ylabel("Win Percentage")
+    plt.title(f"Win Percentage Across UF Sports During {champ_sport.capitalize()} Championship Seasons")
+    plt.legend()
+    plt.show()
+
 
 #make sure r analysis works, option 3 function
 def sports_correlation(sport1, sport2):
@@ -188,7 +244,7 @@ def sports_correlation(sport1, sport2):
         elif abs(r) >= .5 and abs(r) < .7:
             strength = "strong"
         elif abs(r) >= .3 and abs(r) < .5:
-            strenth = "moderate"
+            strength = "moderate"
         elif abs(r) > 0 and abs(r) < .3:
             strength = "weak"
 
@@ -201,10 +257,9 @@ def compare_sports_means(sport_list):
     sports_df = {}
     for sport in sport_list:
         df = retrieve_data_frame(sport)
-        for season in df["year"]:
-            df["start_year"] = [convert_year_to_integer(season)]
-            df["season_label"] = df["year"]
-            sports_df[sport] = df
+        df["start_year"] = df["year"].apply(convert_year_to_integer)
+        df["season_label"] = df["year"]
+        sports_df[sport] = df
 
     #determines valid year range
     all_years = set()
@@ -215,8 +270,8 @@ def compare_sports_means(sport_list):
 
     #user selects interval to analyze over
     try:
-        start_year_input = int(input("Start Year: "))
-        end_year_input = int(input("End Year: "))
+        start_year_input = int(input("Enter the year you wish to start the comparison: "))
+        end_year_input = int(input("Enter the year you wish to end the comparison: "))
 
         if start_year_input < min_year or end_year_input > max_year:
             print(f"Years must be between {min_year} and {max_year}.")
@@ -237,8 +292,9 @@ def compare_sports_means(sport_list):
         sport_interval_dfs[sport] = interval_df
 
     # Determine overlapping seasons
+    year_sets = []
     for df in sport_interval_dfs.values():
-        year_sets = set(df["start_year"])
+        year_sets.append(set(df["start_year"]))
     shared_years = sorted(set.intersection(*year_sets))
 
     if not shared_years:
@@ -249,9 +305,7 @@ def compare_sports_means(sport_list):
     filtered_df = {}
     interval_df = {}
     for sport, df in sports_df.items():
-        # Filter by shared years
         filtered_df[sport] = df[df["start_year"].isin(shared_years)]
-        # Sort the filtered DataFrame for specific sport
         sorted_df = filtered_df[sport].sort_values("start_year")
         interval_df[sport] = sorted_df
 
@@ -282,7 +336,7 @@ def compare_sports_means(sport_list):
         else:
             direction = "stayed the same"
 
-        print(f"{sport.capitalize()}'s win percentage {direction} by {abs(total_change):.2f} points from {labels[0]} to {labels[-1]}.")
+        print(f"{sport.capitalize()}'s win percentage {direction} by {abs(total_change):.2f} points from the {labels[0]} season to the {labels[-1]} season.")
         print(f"{sport.capitalize()}'s win percentage {direction} by {abs(average_change):.2f} on average from year to year.")
 
     #labels for x-axis
@@ -290,23 +344,21 @@ def compare_sports_means(sport_list):
     plt.xticks(interval_df[example_sport]["start_year"], interval_df[example_sport]["season_label"])
 
     #title
-    for sport in sport_list:
-        sports_names_formatted = ", ".join(sport.capitalize())
-    year_range = f"{start_year_input}-{end_year_input}"
-    full_title = f"Performance Trends: {sports_names_formatted}\n {year_range}"
-    plt.title(full_title)
-
+    sports_names_formatted = ", ".join([sport.capitalize() for sport in sport_list])
+    labels = list(df["season_label"])
+    year_range = f"{labels[0]} Season to {labels[-1]} Season"
+    plt.title(f"Performance Trends: {sports_names_formatted}\n{year_range}")
     plt.xlabel("Season")
     plt.ylabel("Win Percentage")
+
     plt.legend()
     plt.show()
 
-
 running = True
 while (running):
-    print("1. Compare all sports with the championship seasons of one sport")
-    print("2. Compare specific sports records")
-    print("3. Find the correlation between two sports")
+    print("1. Compare the win percentages of all sports during a specific sport's championship seasons")
+    print("2. Compare the average rate of change and total change of sports' win percentages over a specific interval")
+    print("3. Find the correlation between two sports' win percentages")
     print("4. Exit")
     option = input("Type in a number to select an option: ")
 
@@ -317,15 +369,13 @@ while (running):
             print("Please enter a valid sport.")
             print("")
             continue
-        champ_df = retrieve_data_frame(champ_sport)
-        champ_color = get_color(champ_sport)
-        #make graphs
+        champ_sports_comparison(champ_sport)
 
     elif (option == '2'):
         num_sports = int(input("Enter the number of sports to compare: "))
         sports_means = []
         for sport in range(num_sports):
-            selection = input("Enter the sport for comparison: ")
+            selection = input("Enter a sport for comparison: ")
             selection = selection.lower()
             if check_sport_validity(selection) == False:
                 print("Please enter a valid sport.")
@@ -335,13 +385,13 @@ while (running):
         compare_sports_means(sports_means)
 
     elif (option == '3'):
-        sport1 = input("Enter your first sport: ")
+        sport1 = input("Enter the first sport for comparison: ")
         sport1 = sport1.lower()
         if(check_sport_validity(sport1) == False):
             print("Please enter a valid sport.")
             print("")
             continue
-        sport2 = input("Enter your second sport: ")
+        sport2 = input("Enter the second sport for comparison: ")
         sport2 = sport2.lower()
         if(check_sport_validity(sport2) == False):
             print("Please enter a valid sport.")
