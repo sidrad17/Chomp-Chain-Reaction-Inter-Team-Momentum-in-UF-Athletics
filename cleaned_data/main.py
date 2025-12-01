@@ -358,7 +358,6 @@ def compare_sports_means(sport_list):
     plt.show()
 
 #initial graphs and welcome statement
-compare_all_sports()
 stacked_bar_plot()
 print("Welcome to the Chomp Chain Reaction Data Analyzer!")
 
