@@ -268,8 +268,8 @@ def compare_sports_means(sport_list):
 
     #user selects interval to analyze over
     try:
-        start_year_input = int(input("Enter the year you wish to start your comparison: "))
-        end_year_input = int(input("Enter the year you wish to end your comparison: "))
+        start_year_input = int(input("Enter the year you wish to start the comparison: "))
+        end_year_input = int(input("Enter the year you wish to end the comparison: "))
 
         if start_year_input < min_year or end_year_input > max_year:
             print(f"Years must be between {min_year} and {max_year}.")
@@ -373,7 +373,7 @@ while (running):
         num_sports = int(input("Enter the number of sports to compare: "))
         sports_means = []
         for sport in range(num_sports):
-            selection = input("Enter the sport for comparison: ")
+            selection = input("Enter a sport for comparison: ")
             selection = selection.lower()
             if check_sport_validity(selection) == False:
                 print("Please enter a valid sport.")
@@ -383,13 +383,13 @@ while (running):
         compare_sports_means(sports_means)
 
     elif (option == '3'):
-        sport1 = input("Enter your first sport for comparison: ")
+        sport1 = input("Enter the first sport for comparison: ")
         sport1 = sport1.lower()
         if(check_sport_validity(sport1) == False):
             print("Please enter a valid sport.")
             print("")
             continue
-        sport2 = input("Enter your second sport for comparison: ")
+        sport2 = input("Enter the second sport for comparison: ")
         sport2 = sport2.lower()
         if(check_sport_validity(sport2) == False):
             print("Please enter a valid sport.")
