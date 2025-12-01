@@ -61,7 +61,7 @@ def get_color(sport):
         return 'purple'
 
 #not done
-def comparing_all_sports():
+def compare_all_sports():
     return 0
 
 #change colors
@@ -359,8 +359,11 @@ def compare_sports_means(sport_list):
     plt.legend()
     plt.show()
 
+#initial graphs and welcome statement
 stacked_bar_plot()
 print("Welcome to the Chomp Chain Reaction Data Analyzer!")
+
+#menu loop
 running = True
 while running:
     print("1. Compare the win percentages of all sports during a specific sport's championship seasons")
@@ -369,7 +372,7 @@ while running:
     print("4. Exit")
     option = input("Type in a number to select an option: ")
 
-    if option == '1':
+    if option == "1":
         champ_sport = input("Enter the championship sport for comparison: ")
         champ_sport = champ_sport.lower()
         if check_sport_validity(champ_sport) == False:
@@ -378,7 +381,7 @@ while running:
             continue
         champ_sports_comparison(champ_sport)
 
-    elif option == '2':
+    elif option == "2":
         num_sports = int(input("Enter the number of sports to compare: "))
         sports_means = []
         for sport in range(num_sports):
@@ -391,7 +394,7 @@ while running:
             sports_means.append(selection)
         compare_sports_means(sports_means)
 
-    elif option == '3':
+    elif option == "3":
         sport1 = input("Enter the first sport for comparison: ")
         sport1 = sport1.lower()
         if(check_sport_validity(sport1) == False):
@@ -406,7 +409,7 @@ while running:
             continue
         sports_correlation(sport1, sport2)
 
-    elif option == '4':
+    elif option == "4":
         break
 
     else:
