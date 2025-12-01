@@ -3,9 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 sb_df = pd.read_csv('softball.csv')
 bb_df = pd.read_csv('baseball.csv')
-#uncomment when CSVs are available
 fb_df = pd.read_csv('football.csv')
-#ten_df = pd.read_csv('tennis.csv')
+ten_df = pd.read_csv('tennis.csv')
 wten_df = pd.read_csv('womens_tennis.csv')
 bk_df = pd.read_csv('basketball.csv')
 wbk_df = pd.read_csv('womens_basketball.csv')
@@ -117,11 +116,10 @@ def stacked_bar_plot():
 
 #option 1 graph function,
 def champ_sports_comparison(champ_sport):
-    # complete_sport_list = ['football', 'basketball','softball','baseball','gymnastics','volleyball','tennis',"women's tennis",'soccer',"women's basketball"]
-    temp_sport_list = ['softball', 'basketball', 'baseball', 'soccer', 'volleyball', "women's basketball", 'football']
+    sport_list = ["baseball","softball","women's basketball","volleyball","basketball","football","women's tennis","soccer"]
 
     sports_df = {}
-    for sport in temp_sport_list:
+    for sport in sport_list:
         df = retrieve_data_frame(sport)
         df["start_year"] = df["year"].apply(convert_year_to_integer)
         df["season_label"] = df["year"]
