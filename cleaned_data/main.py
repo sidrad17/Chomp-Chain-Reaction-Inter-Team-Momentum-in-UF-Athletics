@@ -64,58 +64,130 @@ def get_color(sport):
 
 #not done
 def comparing_all_sports():
-    #complete_sport_list = ['football', 'basketball','softball','baseball','gymnastics','volleyball','tennis',"women's tennis",'soccer',"women's basketball"]
-    #start_year = find_start_year(complete_sport_list)
-    temp_sport_list = ['softball','basketball','baseball','football','tennis','soccer','volleyball']
-    for i in range (len(temp_sport_list)):
-        sport_df = retrieve_data_frame(temp_sport_list[i])
-        sport_df.plot(x ='year',y = 'win_loss_pct')
-    plt.title(f'Win/Loss Records of Florida Gators Sports from 1906 to Present')
-    plt.xlabel('Season', fontsize = 18)
-    plt.ylabel('Record Percentage', fontsize = 18)
-    plt.show()
+    temp_sport_list = ['baseball', 'softball', "women's basketball", 'volleyball', 'basketball', 'football']
+    sports_df = {}
+    for sport in temp_sport_list:
+        df = retrieve_data_frame(sport)
+        for season in df["year"]:
+            df["start_year"] = [convert_year_to_integer(season)]
+            df["season_label"] = df["year"]
+            sports_df[sport] = df
+
+    # determines valid year range
+    all_years = set()
+    for df in sports_df.values():
+        all_years.update(df["start_year"])
+    min_year = min(all_years)
+    max_year = max(all_years)
 
 
-#check if it stacks
-def segmented_bar_chart():
-    temp_sport_list = ['softball','basketball','baseball','soccer','volleyball', "women's basketball"]
-    start_year = 1925
+    # Filters dfs to selected interval
+    sport_interval_dfs = {}
+    for sport, df in sports_df.items():
+        interval_df = df[(df["start_year"] >= min_year) & (df["start_year"] <= max_year)]
+        sport_interval_dfs[sport] = interval_df
 
-    football_base_list = ['football']
-    football_columns = ['sport']
-    for i in range(1, len(retrieve_data_frame('football')['national_championship'].tolist())+1):
-        if(retrieve_data_frame('football')['national_championship'].iloc[-i]=='yes'):
-            football_base_list.append(1)
+    # Determine overlapping seasons
+    for df in sport_interval_dfs.values():
+        year_sets = set(df["start_year"])
+    shared_years = sorted(set.intersection(*year_sets))
+
+    # ensures only shared years are being evaluated
+    filtered_df = {}
+    interval_df = {}
+    for sport, df in sports_df.items():
+        # Filter by shared years
+        filtered_df[sport] = df[df["start_year"].isin(shared_years)]
+        # Sort the filtered DataFrame for specific sport
+        sorted_df = filtered_df[sport].sort_values("start_year")
+        interval_df[sport] = sorted_df
+
+    # plot graph
+    plt.figure(figsize=(10, 10))
+
+    # basic info needed for plotting (years, win%s, labels)
+    for sport in temp_sport_list:
+        df = interval_df[sport]
+        years = list(df["start_year"])
+        win_percentages = list(df["win_loss_pct"])
+        labels = list(df["season_label"])
+
+        plt.plot(years, win_percentages, linewidth=3, marker="o", color=get_color(sport),
+                 label=f"{sport.capitalize()} Win Percentage")
+
+        # analysis of total change over the interval
+        start_win_percentages = win_percentages[0]
+        end_win_percentages = win_percentages[-1]
+        total_change = end_win_percentages - start_win_percentages
+
+        # analysis of how much win% changed per year on average (mean)
+        average_change = total_change / (len(win_percentages) - 1)
+
+        if total_change > 0:
+            direction = "increased"
+        elif total_change < 0:
+            direction = "decreased"
         else:
-            football_base_list.append(0)
-        football_columns.append(retrieve_data_frame('football')['year'].iloc[-i])
+            direction = "stayed the same"
 
-    df = pd.DataFrame(football_base_list, columns = football_columns)
+        print(
+            f"{sport.capitalize()}'s win percentage {direction} by {abs(total_change):.2f} points from {labels[0]} to {labels[-1]}.")
+        print(
+            f"{sport.capitalize()}'s win percentage {direction} by {abs(average_change):.2f} on average from year to year.")
 
-    for i in range(len(temp_sport_list)):
-        vals = [temp_sport_list[i]]
-        sport_df = retrieve_data_frame(temp_sport_list[i])
-        if (convert_year_to_integer(sport_df['year'].iloc[-1]) > start_year):
-            for k in range(convert_year_to_integer(sport_df['year'].iloc[-1]) - start_year - 1):
-                vals.append(0)
-        for j in range(1,len(sport_df['year'].tolist())+1):
-            if ((sport_df['national_championship'].iloc[-j]) == 'yes'):
-                vals.append(1)
-            else:
-                vals.append(0)
-        df.loc[df.size()] = vals
+    # labels for x-axis
+    #example_sport = temp_sport_list[0]
+    plt.xticks(interval_df[example_sport]["start_year"], interval_df[example_sport]["season_label"])
 
-    df.plot(kind = 'bar',stacked = True)
-    plt.xlabel('Season', fontsize=10)
-    plt.ylabel('Number of Championship Wins', fontsize=10)
-    #plt.yticks([1.0],[1])
-    plt.title('Champsionship Wins per Year')
-    #plt.xticks(['26-27','30-31','40-41','50-51','60-61','70-71','80-81','90-91','00-01','10-11','20-21'],['26-27','30-31','40-41','50-51','60-61','70-71','80-81','90-91','00-01','10-11','20-21'],fontsize = 8)
+
+    plt.xlabel("Season")
+    plt.ylabel("Win Percentage")
     plt.legend()
     plt.show()
 
-segmented_bar_chart()
 
+def segmented_bar_plot():
+    temp_sport_list = ['baseball','softball',"women's basketball",'volleyball','basketball','football']
+    start_year = 1926
+
+    base_list = ['1925-1926']
+    columns = ['season']
+    for i in range(0,len(temp_sport_list)):
+        sport_df = retrieve_data_frame(temp_sport_list[i])
+        base_list.append(0)
+        columns.append(temp_sport_list[i])
+    df = pd.DataFrame([base_list], columns=columns)
+    numRows = 1
+
+    for i in range(2,len(retrieve_data_frame('football')['national_championship'].tolist())+1):
+        vals = [retrieve_data_frame('football')['year'].iloc[-i]]
+        for j in range(0,len(temp_sport_list)):
+            sport_df = retrieve_data_frame(temp_sport_list[j])
+            if(convert_year_to_integer(sport_df['year'].iloc[-1]) > start_year):
+                if(i <= convert_year_to_integer(sport_df['year'].iloc[-1]) - start_year):
+                    vals.append(0)
+                else:
+                    if(retrieve_data_frame(temp_sport_list[j])['national_championship'].iloc[-i+(convert_year_to_integer(sport_df['year'].iloc[-1]) - start_year)+1] == 'yes'):
+                        vals.append(1)
+                    else:
+                        vals.append(0)
+            elif(retrieve_data_frame(temp_sport_list[j])['national_championship'].iloc[-i] == 'yes'):
+                vals.append(1)
+            else:
+                vals.append(0)
+        df.loc[numRows] = vals
+        numRows += 1
+
+    df.plot(kind='bar', stacked=True)
+    plt.xlabel('Season', fontsize=10)
+    plt.ylabel('Number of Championship Wins', fontsize=10)
+    # plt.yticks([1.0],[1])
+    plt.title('Champsionship Wins per Year')
+    # plt.xticks(['26-27','30-31','40-41','50-51','60-61','70-71','80-81','90-91','00-01','10-11','20-21'],['26-27','30-31','40-41','50-51','60-61','70-71','80-81','90-91','00-01','10-11','20-21'],fontsize = 8)
+    plt.legend()
+    plt.show()
+
+segmented_bar_plot()
 
 #option 1 graph function,
 def champ_sports_comparison(champ_sport):
