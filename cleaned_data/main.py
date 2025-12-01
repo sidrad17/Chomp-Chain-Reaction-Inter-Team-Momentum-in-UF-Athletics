@@ -113,7 +113,7 @@ def stacked_bar_plot():
     #['1925-1926','1930-1931','1940-1941','1950-1951','1960-1961','1970-1971','1980-1981','1990-1991','2000-2001','2010-2011','2020-2021','2025-2026']
 
 
-#option 1 function
+#option 1 function,compare championships
 def champ_sports_comparison(champ_sport):
     sport_list = ['baseball','softball',"women's basketball",'volleyball','basketball','football',"women's tennis",'soccer','tennis']
 
@@ -172,7 +172,7 @@ def champ_sports_comparison(champ_sport):
     plt.show()
 
 
-#option 3 function
+#option 3 function, evaluate correlation coefficient
 def sports_correlation(sport1, sport2):
     sport1_df = retrieve_data_frame(sport1)
     sport2_df = retrieve_data_frame(sport2)
@@ -254,7 +254,7 @@ def sports_correlation(sport1, sport2):
         print(f"With a correlation coefficient of {r:.2f}, the win percentages over time of {sport1.capitalize()} and {sport2.capitalize()} have a {strength}, {direction} correlation.")
 
 
-#option 2 function
+#option 2 function, compare AROC and total chage
 def compare_sports_means(sport_list):
     #loads all df into a dictionary
     sports_df = {}
