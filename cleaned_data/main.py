@@ -160,7 +160,7 @@ def champ_sports_comparison(champ_sport):
         plt.scatter(years, win_pct, s=120, color = sport_color, label=f"{sport.capitalize()} Win %")
 
     plt.xticks(x_vals, x_labels)
-    plt.xlabel("Football Championship Season")
+    plt.xlabel(f"{champ_sport} Championship Season")
     plt.ylabel("Win Percentage")
     plt.title(f"Win Percentage Across UF Sports During {champ_sport.capitalize()} Championship Seasons")
     plt.legend()
@@ -242,7 +242,7 @@ def sports_correlation(sport1, sport2):
         elif abs(r) >= .5 and abs(r) < .7:
             strength = "strong"
         elif abs(r) >= .3 and abs(r) < .5:
-            strenth = "moderate"
+            strength = "moderate"
         elif abs(r) > 0 and abs(r) < .3:
             strength = "weak"
 
@@ -268,8 +268,8 @@ def compare_sports_means(sport_list):
 
     #user selects interval to analyze over
     try:
-        start_year_input = int(input("Start Year: "))
-        end_year_input = int(input("End Year: "))
+        start_year_input = int(input("Enter the year you wish to start your comparison: "))
+        end_year_input = int(input("Enter the year you wish to end your comparison: "))
 
         if start_year_input < min_year or end_year_input > max_year:
             print(f"Years must be between {min_year} and {max_year}.")
@@ -303,9 +303,7 @@ def compare_sports_means(sport_list):
     filtered_df = {}
     interval_df = {}
     for sport, df in sports_df.items():
-        # Filter by shared years
         filtered_df[sport] = df[df["start_year"].isin(shared_years)]
-        # Sort the filtered DataFrame for specific sport
         sorted_df = filtered_df[sport].sort_values("start_year")
         interval_df[sport] = sorted_df
 
@@ -347,20 +345,18 @@ def compare_sports_means(sport_list):
     sports_names_formatted = ", ".join([sport.capitalize() for sport in sport_list])
     labels = list(df["season_label"])
     year_range = f"{labels[0]} Season to {labels[-1]} Season"
-    full_title = f"Performance Trends: {sports_names_formatted}\n{year_range}"
-    plt.title(full_title)
-
+    plt.title(f"Performance Trends: {sports_names_formatted}\n{year_range}")
     plt.xlabel("Season")
     plt.ylabel("Win Percentage")
+
     plt.legend()
     plt.show()
 
-
 running = True
 while (running):
-    print("1. Compare all sports with the championship seasons of one sport")
-    print("2. Compare specific sports records")
-    print("3. Find the correlation between two sports")
+    print("1. Compare the win percentages of all sports during a specific sport's championship seasons")
+    print("2. Compare the average rate of change and total change of sports' win percentages over a specific interval")
+    print("3. Find the correlation between two sports' win percentages")
     print("4. Exit")
     option = input("Type in a number to select an option: ")
 
@@ -387,13 +383,13 @@ while (running):
         compare_sports_means(sports_means)
 
     elif (option == '3'):
-        sport1 = input("Enter your first sport: ")
+        sport1 = input("Enter your first sport for comparison: ")
         sport1 = sport1.lower()
         if(check_sport_validity(sport1) == False):
             print("Please enter a valid sport.")
             print("")
             continue
-        sport2 = input("Enter your second sport: ")
+        sport2 = input("Enter your second sport for comparison: ")
         sport2 = sport2.lower()
         if(check_sport_validity(sport2) == False):
             print("Please enter a valid sport.")
