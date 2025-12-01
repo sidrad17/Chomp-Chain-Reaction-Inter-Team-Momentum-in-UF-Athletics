@@ -113,7 +113,7 @@ def stacked_bar_plot():
     #['1925-1926','1930-1931','1940-1941','1950-1951','1960-1961','1970-1971','1980-1981','1990-1991','2000-2001','2010-2011','2020-2021','2025-2026']
 
 
-#option 1 graph function,
+#option 1 function
 def champ_sports_comparison(champ_sport):
     sport_list = ['baseball','softball',"women's basketball",'volleyball','basketball','football',"women's tennis",'soccer','tennis']
 
@@ -155,7 +155,7 @@ def champ_sports_comparison(champ_sport):
         year_to_pos[year] = position
         position += 1
 
-    # Plot each sport
+    #plot each sport
     for sport, df in comparison_dfs.items():
         years = []
         for year in df["start_year"]:
@@ -172,12 +172,12 @@ def champ_sports_comparison(champ_sport):
     plt.show()
 
 
-#make sure r analysis works, option 3 function
+#option 3 function
 def sports_correlation(sport1, sport2):
     sport1_df = retrieve_data_frame(sport1)
     sport2_df = retrieve_data_frame(sport2)
 
-    #Converts each sport's 'year' string to an integer and stores as a new column
+    #converts each sport's 'year' string to an integer and stores as a new column
     integer_years_df1 = []
     for season in sport1_df["year"]:
         converted = convert_year_to_integer(season)
@@ -254,7 +254,7 @@ def sports_correlation(sport1, sport2):
         print(f"With a correlation coefficient of {r:.2f}, the win percentages over time of {sport1.capitalize()} and {sport2.capitalize()} have a {strength}, {direction} correlation.")
 
 
-#ensure it works when csvs are correct, option 2 function
+#option 2 function
 def compare_sports_means(sport_list):
     #loads all df into a dictionary
     sports_df = {}
@@ -288,13 +288,13 @@ def compare_sports_means(sport_list):
         print("Please enter valid integer years.")
         return
 
-    # Filters dfs to selected interval
+    #filters dfs to selected interval
     sport_interval_dfs = {}
     for sport, df in sports_df.items():
         interval_df = df[(df["start_year"] >= start_year_input) & (df["start_year"] <= end_year_input)]
         sport_interval_dfs[sport] = interval_df
 
-    # Determine overlapping seasons
+    #determine overlapping seasons
     year_sets = []
     for df in sport_interval_dfs.values():
         year_sets.append(set(df["start_year"]))
