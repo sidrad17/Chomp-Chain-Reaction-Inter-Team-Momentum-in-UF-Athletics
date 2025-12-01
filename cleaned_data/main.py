@@ -117,7 +117,7 @@ def stacked_bar_plot():
 
 #option 1 graph function,
 def champ_sports_comparison(champ_sport):
-    # complete_sport_list = ["football", "basketball","softball","baseball","volleyball","tennis","women's tennis",'soccer',"women's basketball"]
+    # complete_sport_list = ['football', 'basketball','softball','baseball','gymnastics','volleyball','tennis',"women's tennis",'soccer',"women's basketball"]
     temp_sport_list = ['softball', 'basketball', 'baseball', 'soccer', 'volleyball', "women's basketball", 'football']
 
     sports_df = {}
@@ -168,11 +168,12 @@ def champ_sports_comparison(champ_sport):
         plt.scatter(years, win_pct, s=120, color = get_color(sport), label=f"{sport.capitalize()} Win %")
 
     plt.xticks(x_positions, x_labels)
-    plt.xlabel(f"{champ_sport.capitalize()} Championship Season")
+    plt.xlabel(f"{champ_sport} Championship Season")
     plt.ylabel("Win Percentage")
     plt.title(f"Win Percentage Across UF Sports During {champ_sport.capitalize()} Championship Seasons")
     plt.legend()
     plt.show()
+
 
 #make sure r analysis works, option 3 function
 def sports_correlation(sport1, sport2):
