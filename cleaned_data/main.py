@@ -12,7 +12,7 @@ soc_df = pd.read_csv('soccer.csv')
 vb_df = pd.read_csv('volleyball.csv')
 
 def check_sport_validity(sport):
-    if (sport!= "football" and sport!= "basketball" and sport!= "baseball" and sport!= "softball" and sport!= "women's basketball" and sport!= "women's tennis" and sport!= "soccer"  and sport!= "volleyball"):
+    if (sport!= "football" and sport!= "basketball" and sport!= "baseball" and sport!= "softball" and sport!= "women's basketball" and sport!= "women's tennis" and sport!= "soccer"  and sport!= "volleyball" and sport != 'tennis'):
         return False
     return True
 
