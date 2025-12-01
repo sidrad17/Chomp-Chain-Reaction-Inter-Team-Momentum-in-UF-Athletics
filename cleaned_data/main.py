@@ -66,7 +66,9 @@ def get_color(sport):
 def comparing_all_sports():
     return 0
 
-def segmented_bar_plot():
+def stacked_bar_plot():
+    xticks = [0]
+    xticklabels = ['1925-1926']
     temp_sport_list = ['baseball','softball',"women's basketball",'volleyball','basketball','football']
     start_year = 1926
 
@@ -81,6 +83,9 @@ def segmented_bar_plot():
 
     for i in range(2,len(retrieve_data_frame('football')['national_championship'].tolist())+1):
         vals = [retrieve_data_frame('football')['year'].iloc[-i]]
+        if(int(retrieve_data_frame('football')['year'].iloc[-i][3])==5):
+            xticks.append(i-1)
+            xticklabels.append(retrieve_data_frame('football')['year'].iloc[-i])
         for j in range(0,len(temp_sport_list)):
             sport_df = retrieve_data_frame(temp_sport_list[j])
             if(convert_year_to_integer(sport_df['year'].iloc[-1]) > start_year):
@@ -100,14 +105,13 @@ def segmented_bar_plot():
 
     df.plot(kind='bar', stacked=True)
     plt.xlabel('Season', fontsize=10)
-    plt.ylabel('Number of Championship Wins', fontsize=10)
-    # plt.yticks([1.0],[1])
-    plt.title('Champsionship Wins per Year')
-    # plt.xticks(['26-27','30-31','40-41','50-51','60-61','70-71','80-81','90-91','00-01','10-11','20-21'],['26-27','30-31','40-41','50-51','60-61','70-71','80-81','90-91','00-01','10-11','20-21'],fontsize = 8)
-    plt.legend()
+    plt.ylabel('Number of Championship', fontsize=10)
+    plt.yticks([0,1,2],[0,1,2])
+    plt.title('Champsionship Wins per Year Over 100 Years')
+    plt.xticks(xticks,xticklabels,fontsize=6, rotation=0)
     plt.show()
+    #['1925-1926','1930-1931','1940-1941','1950-1951','1960-1961','1970-1971','1980-1981','1990-1991','2000-2001','2010-2011','2020-2021','2025-2026']
 
-#segmented_bar_plot()
 
 #option 1 graph function,
 def champ_sports_comparison(champ_sport):
@@ -354,6 +358,8 @@ def compare_sports_means(sport_list):
     plt.legend()
     plt.show()
 
+stacked_bar_plot()
+print("Welcome to the Chomp Chain Reaction Data Analyzer!")
 running = True
 while (running):
     print("1. Compare the win percentages of all sports during a specific sport's championship seasons")
