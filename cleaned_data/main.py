@@ -3,8 +3,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 sb_df = pd.read_csv('softball.csv')
 bb_df = pd.read_csv('baseball.csv')
+#uncomment when CSVs are available
 fb_df = pd.read_csv('football.csv')
-ten_df = pd.read_csv('tennis.csv')
+#ten_df = pd.read_csv('tennis.csv')
 wten_df = pd.read_csv('womens_tennis.csv')
 bk_df = pd.read_csv('basketball.csv')
 wbk_df = pd.read_csv('womens_basketball.csv')
@@ -21,10 +22,11 @@ def retrieve_data_frame(sport):
         return sb_df
     elif sport == 'baseball':
        return bb_df
+    #uncomment as dataframes become available
     elif sport == 'football':
        return fb_df
-    elif sport == 'tennis':
-       return ten_df
+    #elif sport == 'tennis':
+       #return ten_df
     elif sport == "women's tennis":
        return wten_df
     elif sport == 'basketball':
@@ -68,15 +70,15 @@ def comparing_all_sports():
 def stacked_bar_plot():
     xticks = [0]
     xticklabels = ['1925-1926']
-    sport_list = ['softball', 'basketball', 'baseball', 'soccer', 'volleyball', "women's basketball", 'football','tennis',"women's tennis"]
+    temp_sport_list = ['baseball','softball',"women's basketball",'volleyball','basketball','football',"women's tennis",'soccer']
     start_year = 1926
 
     base_list = ['1925-1926']
     columns = ['season']
-    for i in range(0,len(sport_list)):
-        sport_df = retrieve_data_frame(sport_list[i])
+    for i in range(0,len(temp_sport_list)):
+        sport_df = retrieve_data_frame(temp_sport_list[i])
         base_list.append(0)
-        columns.append(sport_list[i])
+        columns.append(temp_sport_list[i])
     df = pd.DataFrame([base_list], columns=columns)
     num_rows = 1
 
@@ -85,18 +87,18 @@ def stacked_bar_plot():
         if int(retrieve_data_frame('football')['year'].iloc[-i][3])==5:
             xticks.append(i-1)
             xticklabels.append(retrieve_data_frame('football')['year'].iloc[-i])
-        for j in range(0,len(sport_list)):
-            sport_df = retrieve_data_frame(sport_list[j])
+        for j in range(0,len(temp_sport_list)):
+            sport_df = retrieve_data_frame(temp_sport_list[j])
             df_start_year = convert_year_to_integer(sport_df['year'].iloc[-1])
             if df_start_year > start_year:
                 if i <= df_start_year - start_year:
                     vals.append(0)
                 else:
-                    if retrieve_data_frame(sport_list[j])['national_championship'].iloc[-i+(convert_year_to_integer(sport_df['year'].iloc[-1]) - start_year)+1] == 'yes':
+                    if retrieve_data_frame(temp_sport_list[j])['national_championship'].iloc[-i+(convert_year_to_integer(sport_df['year'].iloc[-1]) - start_year)+1] == 'yes':
                         vals.append(1)
                     else:
                         vals.append(0)
-            elif retrieve_data_frame(sport_list[j])['national_championship'].iloc[-i] == 'yes':
+            elif retrieve_data_frame(temp_sport_list[j])['national_championship'].iloc[-i] == 'yes':
                 vals.append(1)
             else:
                 vals.append(0)
@@ -110,14 +112,16 @@ def stacked_bar_plot():
     plt.title('Championship Wins per Year Over 100 Years')
     plt.xticks(xticks,xticklabels,fontsize=6, rotation=0)
     plt.show()
+    #['1925-1926','1930-1931','1940-1941','1950-1951','1960-1961','1970-1971','1980-1981','1990-1991','2000-2001','2010-2011','2020-2021','2025-2026']
 
 
 #option 1 graph function,
 def champ_sports_comparison(champ_sport):
-    sport_list = ['softball', 'basketball', 'baseball', 'soccer', 'volleyball', "women's basketball", 'football','tennis',"women's tennis"]
+    # complete_sport_list = ['football', 'basketball','softball','baseball','gymnastics','volleyball','tennis',"women's tennis",'soccer',"women's basketball"]
+    temp_sport_list = ['softball', 'basketball', 'baseball', 'soccer', 'volleyball', "women's basketball", 'football']
 
     sports_df = {}
-    for sport in sport_list:
+    for sport in temp_sport_list:
         df = retrieve_data_frame(sport)
         df["start_year"] = df["year"].apply(convert_year_to_integer)
         df["season_label"] = df["year"]
