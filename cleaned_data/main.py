@@ -149,17 +149,27 @@ def champ_sports_comparison(champ_sport):
     #uses given championship sport for x-axis
     champ_df = sports_df[champ_sport]
     champ_df = champ_df[champ_df["start_year"].isin(championship_years)]
-    x_vals = list(champ_df["start_year"])
+    champ_df = champ_df.sort_values("start_year")
     x_labels = list(champ_df["season_label"])
+    x_positions = list(range(len(x_labels)))
 
     #plots all other sports' win%
-    for sport, df in comparison_dfs.items():
-        years = list(df["start_year"])  # numeric spacing
-        win_pct = list(df["win_loss_pct"])
-        sport_color = get_color(sport)
-        plt.scatter(years, win_pct, s=120, color = sport_color, label=f"{sport.capitalize()} Win %")
+    year_to_pos = {}
+    position = 0
+    for year in champ_df["start_year"]:
+        year_to_pos[year] = position
+        position += 1
 
-    plt.xticks(x_vals, x_labels)
+    # Plot each sport
+    for sport, df in comparison_dfs.items():
+        years = []
+        for year in df["start_year"]:
+            years.append(year_to_pos[year])
+
+        win_pct = df["win_loss_pct"].tolist()
+        plt.scatter(years, win_pct, s=120, color = get_color(sport), label=f"{sport.capitalize()} Win %")
+
+    plt.xticks(x_positions, x_labels)
     plt.xlabel(f"{champ_sport} Championship Season")
     plt.ylabel("Win Percentage")
     plt.title(f"Win Percentage Across UF Sports During {champ_sport.capitalize()} Championship Seasons")
