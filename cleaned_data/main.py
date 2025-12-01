@@ -114,7 +114,7 @@ def stacked_bar_plot():
     #['1925-1926','1930-1931','1940-1941','1950-1951','1960-1961','1970-1971','1980-1981','1990-1991','2000-2001','2010-2011','2020-2021','2025-2026']
 
 
-#option 1 graph function,
+#option 1 graph function, championship comparison
 def champ_sports_comparison(champ_sport):
     sport_list = ["baseball","softball","women's basketball","volleyball","basketball","football","women's tennis","soccer"]
 
