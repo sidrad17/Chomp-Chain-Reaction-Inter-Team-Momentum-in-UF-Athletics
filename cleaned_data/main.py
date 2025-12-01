@@ -146,7 +146,7 @@ def champ_sports_comparison(champ_sport):
     champ_df = champ_df[champ_df["start_year"].isin(championship_years)]
     champ_df = champ_df.sort_values("start_year")
     x_labels = list(champ_df["season_label"])
-    x_positions = list(range(len(x_labels)))
+    x_positions = list(range(0, len(x_labels)))
 
     #plots all other sports' win%
     year_to_pos = {}
@@ -165,7 +165,7 @@ def champ_sports_comparison(champ_sport):
         plt.scatter(years, win_pct, s=120, color = get_color(sport), label=f"{sport.capitalize()} Win %")
 
     plt.xticks(x_positions, x_labels)
-    plt.xlabel(f"{champ_sport} Championship Season")
+    plt.xlabel(f"{champ_sport.capitalize()} Championship Season")
     plt.ylabel("Win Percentage")
     plt.title(f"Win Percentage Across UF Sports During {champ_sport.capitalize()} Championship Seasons")
     plt.legend()
@@ -344,7 +344,9 @@ def compare_sports_means(sport_list):
 
     #labels for x-axis
     example_sport = sport_list[0]
-    plt.xticks(interval_df[example_sport]["start_year"], interval_df[example_sport]["season_label"])
+    x_positions = interval_df[example_sport]["start_year"][::2]
+    x_labels = interval_df[example_sport]["season_label"][::2]
+    plt.xticks(x_positions, x_labels)
 
     #title
     sports_names_formatted = ", ".join([sport.capitalize() for sport in sport_list])
