@@ -6,7 +6,7 @@ bb_df = pd.read_csv('baseball.csv')
 #uncomment when CSVs are available
 fb_df = pd.read_csv('football.csv')
 #ten_df = pd.read_csv('tennis.csv')
-#wten_df = pd.read_csv('womens_tennis.csv')
+wten_df = pd.read_csv('womens_tennis.csv')
 bk_df = pd.read_csv('basketball.csv')
 wbk_df = pd.read_csv('womens_basketball.csv')
 soc_df = pd.read_csv('soccer.csv')
@@ -27,8 +27,8 @@ def retrieve_data_frame(sport):
        return fb_df
     #elif sport == 'tennis':
        #return ten_df
-    #elif sport == "women's tennis":
-    #   return wten_df
+    elif sport == "women's tennis":
+       return wten_df
     elif sport == 'basketball':
         return bk_df
     elif sport == "women's basketball":
@@ -70,7 +70,7 @@ def comparing_all_sports():
 def stacked_bar_plot():
     xticks = [0]
     xticklabels = ['1925-1926']
-    temp_sport_list = ['baseball','softball',"women's basketball",'volleyball','basketball','football']
+    temp_sport_list = ['baseball','softball',"women's basketball",'volleyball','basketball','football',"women's tennis",'soccer']
     start_year = 1926
 
     base_list = ['1925-1926']
@@ -80,35 +80,36 @@ def stacked_bar_plot():
         base_list.append(0)
         columns.append(temp_sport_list[i])
     df = pd.DataFrame([base_list], columns=columns)
-    numRows = 1
+    num_rows = 1
 
     for i in range(2,len(retrieve_data_frame('football')['national_championship'].tolist())+1):
         vals = [retrieve_data_frame('football')['year'].iloc[-i]]
-        if(int(retrieve_data_frame('football')['year'].iloc[-i][3])==5):
+        if int(retrieve_data_frame('football')['year'].iloc[-i][3])==5:
             xticks.append(i-1)
             xticklabels.append(retrieve_data_frame('football')['year'].iloc[-i])
         for j in range(0,len(temp_sport_list)):
             sport_df = retrieve_data_frame(temp_sport_list[j])
-            if(convert_year_to_integer(sport_df['year'].iloc[-1]) > start_year):
-                if(i <= convert_year_to_integer(sport_df['year'].iloc[-1]) - start_year):
+            df_start_year = convert_year_to_integer(sport_df['year'].iloc[-1])
+            if df_start_year > start_year:
+                if i <= df_start_year - start_year:
                     vals.append(0)
                 else:
-                    if(retrieve_data_frame(temp_sport_list[j])['national_championship'].iloc[-i+(convert_year_to_integer(sport_df['year'].iloc[-1]) - start_year)+1] == 'yes'):
+                    if retrieve_data_frame(temp_sport_list[j])['national_championship'].iloc[-i+(convert_year_to_integer(sport_df['year'].iloc[-1]) - start_year)+1] == 'yes':
                         vals.append(1)
                     else:
                         vals.append(0)
-            elif(retrieve_data_frame(temp_sport_list[j])['national_championship'].iloc[-i] == 'yes'):
+            elif retrieve_data_frame(temp_sport_list[j])['national_championship'].iloc[-i] == 'yes':
                 vals.append(1)
             else:
                 vals.append(0)
-        df.loc[numRows] = vals
-        numRows += 1
+        df.loc[num_rows] = vals
+        num_rows += 1
 
     df.plot(kind='bar', stacked=True)
     plt.xlabel('Season', fontsize=10)
     plt.ylabel('Number of Championship', fontsize=10)
     plt.yticks([0,1,2],[0,1,2])
-    plt.title('Champsionship Wins per Year Over 100 Years')
+    plt.title('Championship Wins per Year Over 100 Years')
     plt.xticks(xticks,xticklabels,fontsize=6, rotation=0)
     plt.show()
     #['1925-1926','1930-1931','1940-1941','1950-1951','1960-1961','1970-1971','1980-1981','1990-1991','2000-2001','2010-2011','2020-2021','2025-2026']
@@ -362,36 +363,36 @@ def compare_sports_means(sport_list):
 stacked_bar_plot()
 print("Welcome to the Chomp Chain Reaction Data Analyzer!")
 running = True
-while (running):
+while running:
     print("1. Compare the win percentages of all sports during a specific sport's championship seasons")
     print("2. Compare the average rate of change and total change of sports' win percentages over a specific interval")
     print("3. Find the correlation between two sports' win percentages")
     print("4. Exit")
     option = input("Type in a number to select an option: ")
 
-    if (option == '1'):
+    if option == '1':
         champ_sport = input("Enter the championship sport for comparison: ")
         champ_sport = champ_sport.lower()
-        if (check_sport_validity(champ_sport) == False):
+        if check_sport_validity(champ_sport) == False:
             print("Please enter a valid sport.")
             print("")
             continue
         champ_sports_comparison(champ_sport)
 
-    elif (option == '2'):
+    elif option == '2':
         num_sports = int(input("Enter the number of sports to compare: "))
         sports_means = []
         for sport in range(num_sports):
             selection = input("Enter a sport for comparison: ")
             selection = selection.lower()
-            if check_sport_validity(selection) == False:
+            if(check_sport_validity(selection) == False):
                 print("Please enter a valid sport.")
                 print("")
                 continue
             sports_means.append(selection)
         compare_sports_means(sports_means)
 
-    elif (option == '3'):
+    elif option == '3':
         sport1 = input("Enter the first sport for comparison: ")
         sport1 = sport1.lower()
         if(check_sport_validity(sport1) == False):
@@ -406,7 +407,7 @@ while (running):
             continue
         sports_correlation(sport1, sport2)
 
-    elif (option == '4'):
+    elif option == '4':
         break
 
     else:
