@@ -66,6 +66,7 @@ def compare_all_sports():
 
 #change colors
 def stacked_bar_plot():
+    colors = []
     xticks = [0]
     xticklabels = ['1925-1926']
     sport_list = ['baseball','softball',"women's basketball",'volleyball','basketball','football',"women's tennis",'soccer','tennis']
@@ -73,12 +74,14 @@ def stacked_bar_plot():
 
     base_list = ['1925-1926']
     columns = ['season']
-    for i in range(0,len(sport_list)):
-        sport_df = retrieve_data_frame(sport_list[i])
+    for sport in sport_list:
         base_list.append(0)
-        columns.append(sport_list[i])
+        columns.append(sport)
     df = pd.DataFrame([base_list], columns=columns)
     num_rows = 1
+
+    for sport in sport_list:
+        colors.append(get_color(sport))
 
     for i in range(2,len(retrieve_data_frame('football')['national_championship'].tolist())+1):
         vals = [retrieve_data_frame('football')['year'].iloc[-i]]
@@ -103,9 +106,9 @@ def stacked_bar_plot():
         df.loc[num_rows] = vals
         num_rows += 1
 
-    df.plot(kind='bar', stacked=True)
+    df.plot(kind='bar', stacked=True, color=colors)
     plt.xlabel('Season', fontsize=10)
-    plt.ylabel('Number of Championship', fontsize=10)
+    plt.ylabel('Number of Championship Wins', fontsize=10)
     plt.yticks([0,1,2],[0,1,2])
     plt.title('Championship Wins per Year Over 100 Years')
     plt.xticks(xticks,xticklabels,fontsize=6, rotation=0)
