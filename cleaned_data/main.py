@@ -62,7 +62,24 @@ def get_color(sport):
 
 #not done
 def compare_all_sports():
-    return 0
+    sport_list = ['baseball','softball',"women's basketball",'volleyball','basketball','football',"women's tennis",'soccer','tennis']
+    sports_df = {}
+    for sport in sport_list:
+        df = retrieve_data_frame(sport)
+        df["start_year"] = df["year"].apply(convert_year_to_integer)
+        df["season_label"] = df["year"]
+        sports_df[sport] = df
+
+    filtered_df = {}
+    interval_df = {}
+    for sport in sport_list:
+        df = interval_df[sport]
+        years = list(df["start_year"])
+        win_percentages = list(df["win_loss_pct"])
+        labels = list(df["season_label"])
+
+        plt.plot(years, win_percentages, linewidth = 3, color = get_color(sport), label = f"{sport.capitalize()} Win Percentage")
+
 
 #change colors
 def stacked_bar_plot():
@@ -363,6 +380,7 @@ def compare_sports_means(sport_list):
     plt.show()
 
 #initial graphs and welcome statement
+compare_all_sports()
 stacked_bar_plot()
 print("Welcome to the Chomp Chain Reaction Data Analyzer!")
 
@@ -390,7 +408,7 @@ while running:
         for sport in range(num_sports):
             selection = input("Enter a sport for comparison: ")
             selection = selection.lower()
-            if(check_sport_validity(selection) == False):
+            if check_sport_validity(selection) == False:
                 print("Please enter a valid sport.")
                 print("")
                 continue
@@ -400,7 +418,7 @@ while running:
     elif option == "3":
         sport1 = input("Enter the first sport for comparison: ")
         sport1 = sport1.lower()
-        if(check_sport_validity(sport1) == False):
+        if check_sport_validity(sport1) == False:
             print("Please enter a valid sport.")
             print("")
             continue
