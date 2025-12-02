@@ -60,9 +60,10 @@ def get_color(sport):
     elif sport == "volleyball":
         return 'purple'
 
-#not done
+
 def compare_all_sports():
     sport_list = ['baseball','softball',"women's basketball",'volleyball','basketball','football',"women's tennis",'soccer','tennis']
+    # loads all df into a dictionary
     sports_df = {}
     for sport in sport_list:
         df = retrieve_data_frame(sport)
@@ -70,16 +71,64 @@ def compare_all_sports():
         df["season_label"] = df["year"]
         sports_df[sport] = df
 
+    # start and end years
+    start_year_input = 1996
+    end_year_input = 2024
+
+    # filters dfs to selected interval
+    sport_interval_dfs = {}
+    for sport, df in sports_df.items():
+        interval_df = df[(df["start_year"] >= start_year_input) & (df["start_year"] <= end_year_input)]
+        sport_interval_dfs[sport] = interval_df
+
+    # determine overlapping seasons
+    year_sets = []
+    for df in sport_interval_dfs.values():
+        year_sets.append(set(df["start_year"]))
+    shared_years = sorted(set.intersection(*year_sets))
+
+    if not shared_years:
+        print("There are no overlapping seasons between these sports in this interval.")
+        return
+
+    # ensures only shared years are being evaluated
     filtered_df = {}
     interval_df = {}
+    for sport, df in sports_df.items():
+        filtered_df[sport] = df[df["start_year"].isin(shared_years)]
+        sorted_df = filtered_df[sport].sort_values("start_year")
+        interval_df[sport] = sorted_df
+
+    # plot graph
+    plt.figure(figsize=(10, 10))
+
+    # basic info needed for plotting (years, win%s, labels)
     for sport in sport_list:
         df = interval_df[sport]
         years = list(df["start_year"])
         win_percentages = list(df["win_loss_pct"])
         labels = list(df["season_label"])
 
-        plt.plot(years, win_percentages, linewidth = 3, color = get_color(sport), label = f"{sport.capitalize()} Win Percentage")
+        plt.plot(years, win_percentages, linewidth=3, marker="o", color=get_color(sport),
+                 label=f"{sport.capitalize()} Win Percentage")
 
+    # labels for x-axis
+    example_sport = sport_list[0]
+    x_positions = interval_df[example_sport]["start_year"][::4]
+    x_labels = interval_df[example_sport]["season_label"][::4]
+    plt.xticks(x_positions, x_labels)
+
+
+    # title
+    sports_names_formatted = ", ".join([sport.capitalize() for sport in sport_list])
+    labels = list(df["season_label"])
+    year_range = f"{labels[0]} Season to {labels[-1]} Season"
+    plt.title(f"Performance Trends of Gator Sports 1996-Present")
+    plt.xlabel("Season")
+    plt.ylabel("Win Percentage")
+
+    plt.legend(loc="lower left")
+    plt.show()
 
 #change colors
 def stacked_bar_plot():
