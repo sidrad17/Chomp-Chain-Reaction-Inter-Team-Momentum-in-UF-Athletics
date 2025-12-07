@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run the data scraping and cleaning to generate CSV files for all 9 UF sports"""
+#run the data scraping and cleaning to generate CSV files for all 9 UF sports
 
 import os, re, time
 import requests
@@ -10,7 +10,7 @@ from io import StringIO
 OUTPUT_DIR = 'cleaned_data'
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-HEADERS = {'User-Agent': 'Mozilla/5.0 (compatible; UFDataCollector/1.0)'}
+headers = {'User-Agent': 'Mozilla/5.0 (compatible; UFDataCollector/1.0)'}
 
 sources = {
     'sportsref_cfb': 'https://www.sports-reference.com/cfb/schools/florida/',
@@ -35,7 +35,7 @@ def read_html_tables(url, match=None, header=0):
     except Exception as e:
         print('Primary read_html failed:', e)
         try:
-            resp = requests.get(url, headers=HEADERS, timeout=20)
+            resp = requests.get(url, headers=headers, timeout=20)
             html = resp.text
             kwargs = {'header': header}
             if match is not None:
@@ -75,7 +75,7 @@ def extract_main_table(dfs, prefer_season_table=False):
     return df
 
 def normalize_to_yyyy_yyyy(s):
-    """Convert any season format to YYYY-YYYY format"""
+    #convert any season to YYYY-YYYY format
     s = str(s).strip()
     s = s.replace('–', '-').replace('—', '-')
     
@@ -119,8 +119,7 @@ def normalize_to_yyyy_yyyy(s):
     return s
 
 def adjust_spring_sport_year(year_str):
-    """Adjust year format for spring sports by subtracting 1 from both years.
-    For example, 2025-2026 becomes 2024-2025."""
+    #adjust year format for spring sport
     year_str = str(year_str).strip()
     m = re.match(r'(\d{4})-(\d{4})$', year_str)
     if m:
@@ -130,7 +129,7 @@ def adjust_spring_sport_year(year_str):
     return year_str
 
 def filter_last_100_years(df):
-    """Filter to only include seasons from 1925 onwards"""
+    #filter to only include seasons from 1925 onwards
     if df.empty or 'year' not in df.columns:
         return df
     
@@ -154,7 +153,7 @@ def filter_last_100_years(df):
     return df
 
 def clean_sportsref(df, sport):
-    """Clean Sports-Reference data"""
+    #clean Sports-Reference data
     if df.empty:
         return pd.DataFrame(columns=['year', 'wins', 'losses', 'win_loss_pct', 'national_championship'])
     df = df.copy()
@@ -237,7 +236,7 @@ def clean_sportsref(df, sport):
     return df[['year', 'wins', 'losses', 'win_loss_pct', 'national_championship']]
 
 def clean_wikipedia(df, sport_name, championship_years=None):
-    """Clean Wikipedia data"""
+    #clean Wikipedia data
     if df.empty:
         return pd.DataFrame(columns=['year', 'wins', 'losses', 'win_loss_pct', 'national_championship'])
     df = df.copy()
@@ -381,16 +380,16 @@ def clean_wikipedia(df, sport_name, championship_years=None):
     df['win_loss_pct'] = pd.to_numeric(df['win_loss_pct'], errors='coerce')
     df['win_loss_pct'] = df['win_loss_pct'].round(3)
     
-    # Check for national championships in columns
+    #check for national championships in columns
     df['national_championship'] = 'no'
     
-    # Look for columns that might contain championship info
+    #look for columns that might contain championship info
     national_cols = [c for c in df.columns if 'national' in str(c).lower() or 'final' in str(c).lower() or 'ranking' in str(c).lower()]
     print(f"  Checking for championships in columns: {national_cols}")
     
     for col in national_cols:
         if col in df.columns:
-            # Check for "1st", "National Champion", etc.
+            #check for "1st", "National Champion", etc.
             mask = df[col].astype(str).str.contains(
                 r'1st|national\s+champion|ncaa\s+champion', 
                 case=False, na=False, regex=True)
@@ -398,7 +397,7 @@ def clean_wikipedia(df, sport_name, championship_years=None):
             if mask.any():
                 print(f"  Found championships in column '{col}': {mask.sum()} matches")
     
-    # Also check if specific years were provided
+    #also check if specific years were provided
     if championship_years and '_original_year' in df.columns:
         champ_year_strs = [str(y) for y in championship_years]
         print(f"  Also checking for specific championship years: {champ_year_strs}")
@@ -435,7 +434,7 @@ def clean_wikipedia(df, sport_name, championship_years=None):
     
     return df[['year', 'wins', 'losses', 'win_loss_pct', 'national_championship']]
 
-# Main execution
+#main execution
 print('='*80)
 print('SCRAPING UF ATHLETICS DATA - 9 SPORTS')
 print('='*80)
@@ -580,7 +579,7 @@ if volleyball_dfs:
     volleyball_raw = extract_main_table(volleyball_dfs, prefer_season_table=True)
     if not volleyball_raw.empty:
         volleyball_raw.to_csv(f'{OUTPUT_DIR}/wikipedia_volleyball_raw.csv', index=False)
-        # No national championships for women's volleyball
+        #no national championships for women's volleyball
         cleaned_volleyball = clean_wikipedia(volleyball_raw, 'volleyball', championship_years=[])
         cleaned_volleyball = filter_last_100_years(cleaned_volleyball)
         if not cleaned_volleyball.empty:
@@ -619,5 +618,5 @@ for filename, name in sports:
     else:
         print(f'{name:25} | FILE NOT FOUND')
 
-print('\n✅ All data saved to cleaned_data/ folder')
+print('\nAll data saved to cleaned_data/ folder')
 print('Format: year (YYYY-YYYY), wins, losses, win_loss_pct, national_championship')
