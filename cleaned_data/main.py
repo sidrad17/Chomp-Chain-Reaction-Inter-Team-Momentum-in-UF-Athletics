@@ -47,18 +47,18 @@ def get_color(sport):
         return "green"
     elif sport == "football":
         return "orange"
-    elif sport == 'tennis':
-        return 'red'
+    elif sport == "tennis":
+        return "red"
     elif sport == "women's tennis":
-        return 'pink'
-    elif sport == 'basketball':
-        return 'blue'
+        return "pink"
+    elif sport == "basketball":
+        return "blue"
     elif sport == "women's basketball":
-        return 'cyan'
-    elif sport == 'soccer':
-        return 'gray'
+        return "cyan"
+    elif sport == "soccer":
+        return "gray"
     elif sport == "volleyball":
-        return 'purple'
+        return "purple"
 
 def stacked_bar_plot():
     colors = []
