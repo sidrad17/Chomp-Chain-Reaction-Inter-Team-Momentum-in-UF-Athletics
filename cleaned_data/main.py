@@ -41,12 +41,12 @@ def convert_year_to_integer(year_string):
     return int(start)
 
 def get_color(sport):
-    if sport == 'softball':
-        return 'olive'
-    elif sport == 'baseball':
-        return 'green'
-    elif sport == 'football':
-        return 'orange'
+    if sport == "softball":
+        return "olive"
+    elif sport == "baseball":
+        return "green"
+    elif sport == "football":
+        return "orange"
     elif sport == 'tennis':
         return 'red'
     elif sport == "women's tennis":
@@ -59,6 +59,55 @@ def get_color(sport):
         return 'gray'
     elif sport == "volleyball":
         return 'purple'
+
+def stacked_bar_plot():
+    colors = []
+    x_positions = [0]
+    x_labels = ['1925-1926']
+    sport_list = ['baseball','softball',"women's basketball",'volleyball','basketball','football',"women's tennis",'soccer','tennis']
+    start_year = 1926
+
+    base_list = ['1925-1926']
+    columns = ['season']
+    for sport in sport_list:
+        base_list.append(0)
+        columns.append(sport)
+    df = pd.DataFrame([base_list], columns=columns)
+    num_rows = 1
+
+    for sport in sport_list:
+        colors.append(get_color(sport))
+
+    for i in range(2,len(retrieve_data_frame('football')['national_championship'].tolist())+1):
+        vals = [retrieve_data_frame('football')['year'].iloc[-i]]
+        if int(retrieve_data_frame('football')['year'].iloc[-i][3])==5:
+            x_positions.append(i-1)
+            x_labels.append(retrieve_data_frame('football')['year'].iloc[-i])
+        for j in range(0,len(sport_list)):
+            sport_df = retrieve_data_frame(sport_list[j])
+            df_start_year = convert_year_to_integer(sport_df['year'].iloc[-1])
+            if df_start_year > start_year:
+                if i <= df_start_year - start_year:
+                    vals.append(0)
+                else:
+                    if retrieve_data_frame(sport_list[j])['national_championship'].iloc[-i+(convert_year_to_integer(sport_df['year'].iloc[-1]) - start_year)+1] == 'yes':
+                        vals.append(1)
+                    else:
+                        vals.append(0)
+            elif retrieve_data_frame(sport_list[j])['national_championship'].iloc[-i] == 'yes':
+                vals.append(1)
+            else:
+                vals.append(0)
+        df.loc[num_rows] = vals
+        num_rows += 1
+
+    df.plot(kind='bar', stacked=True, color=colors)
+    plt.xlabel('Season', fontsize=10)
+    plt.ylabel('Number of Championship Wins', fontsize=10)
+    plt.yticks([0,1,2],[0,1,2])
+    plt.title('Championship Wins per Year Over 100 Years')
+    plt.xticks(x_positions,x_labels,fontsize=6, rotation=0)
+    plt.show()
 
 
 def compare_all_sports():
@@ -128,56 +177,6 @@ def compare_all_sports():
     plt.ylabel("Win Percentage")
 
     plt.legend(loc="lower left")
-    plt.show()
-
-
-def stacked_bar_plot():
-    colors = []
-    x_positions = [0]
-    x_labels = ['1925-1926']
-    sport_list = ['baseball','softball',"women's basketball",'volleyball','basketball','football',"women's tennis",'soccer','tennis']
-    start_year = 1926
-
-    base_list = ['1925-1926']
-    columns = ['season']
-    for sport in sport_list:
-        base_list.append(0)
-        columns.append(sport)
-    df = pd.DataFrame([base_list], columns=columns)
-    num_rows = 1
-
-    for sport in sport_list:
-        colors.append(get_color(sport))
-
-    for i in range(2,len(retrieve_data_frame('football')['national_championship'].tolist())+1):
-        vals = [retrieve_data_frame('football')['year'].iloc[-i]]
-        if int(retrieve_data_frame('football')['year'].iloc[-i][3])==5:
-            x_positions.append(i-1)
-            x_labels.append(retrieve_data_frame('football')['year'].iloc[-i])
-        for j in range(0,len(sport_list)):
-            sport_df = retrieve_data_frame(sport_list[j])
-            df_start_year = convert_year_to_integer(sport_df['year'].iloc[-1])
-            if df_start_year > start_year:
-                if i <= df_start_year - start_year:
-                    vals.append(0)
-                else:
-                    if retrieve_data_frame(sport_list[j])['national_championship'].iloc[-i+(convert_year_to_integer(sport_df['year'].iloc[-1]) - start_year)+1] == 'yes':
-                        vals.append(1)
-                    else:
-                        vals.append(0)
-            elif retrieve_data_frame(sport_list[j])['national_championship'].iloc[-i] == 'yes':
-                vals.append(1)
-            else:
-                vals.append(0)
-        df.loc[num_rows] = vals
-        num_rows += 1
-
-    df.plot(kind='bar', stacked=True, color=colors)
-    plt.xlabel('Season', fontsize=10)
-    plt.ylabel('Number of Championship Wins', fontsize=10)
-    plt.yticks([0,1,2],[0,1,2])
-    plt.title('Championship Wins per Year Over 100 Years')
-    plt.xticks(x_positions,x_labels,fontsize=6, rotation=0)
     plt.show()
 
 
@@ -433,8 +432,8 @@ stacked_bar_plot()
 print("Welcome to the Chomp Chain Reaction Data Analyzer!")
 
 #menu loop
-running = True
-while running:
+is_running = True
+while is_running:
     print("1. Compare the win percentages of all sports during a specific sport's championship seasons")
     print("2. Compare the average rate of change and total change of sports' win percentages over a specific interval")
     print("3. Find the correlation between two sports' win percentages")
@@ -479,7 +478,7 @@ while running:
         sports_correlation(sport1, sport2)
 
     elif option == "4":
-        break
+        is_running = False
 
     else:
         print("Please select a valid option.")
