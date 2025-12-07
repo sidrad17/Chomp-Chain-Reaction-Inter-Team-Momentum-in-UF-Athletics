@@ -1,15 +1,15 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-sb_df = pd.read_csv('softball.csv')
-bb_df = pd.read_csv('baseball.csv')
-fb_df = pd.read_csv('football.csv')
-ten_df = pd.read_csv('tennis.csv')
-wten_df = pd.read_csv('womens_tennis.csv')
-bk_df = pd.read_csv('basketball.csv')
-wbk_df = pd.read_csv('womens_basketball.csv')
-soc_df = pd.read_csv('soccer.csv')
-vb_df = pd.read_csv('volleyball.csv')
+sb_df = pd.read_csv("softball.csv")
+bb_df = pd.read_csv("baseball.csv")
+fb_df = pd.read_csv("football.csv")
+ten_df = pd.read_csv("tennis.csv")
+wten_df = pd.read_csv("womens_tennis.csv")
+bk_df = pd.read_csv("basketball.csv")
+wbk_df = pd.read_csv("womens_basketball.csv")
+soc_df = pd.read_csv("soccer.csv")
+vb_df = pd.read_csv("volleyball.csv")
 
 def check_sport_validity(sport):
     if (sport!= "football" and sport!= "basketball" and sport!= "baseball" and sport!= "softball" and sport!= "women's basketball" and sport!= "women's tennis" and sport!= "soccer"  and sport!= "volleyball" and sport != 'tennis'):
@@ -17,21 +17,21 @@ def check_sport_validity(sport):
     return True
 
 def retrieve_data_frame(sport):
-    if sport == 'softball':
+    if sport == "softball":
         return sb_df
-    elif sport == 'baseball':
+    elif sport == "baseball":
        return bb_df
-    elif sport == 'football':
+    elif sport == "football":
        return fb_df
-    elif sport == 'tennis':
+    elif sport == "tennis":
        return ten_df
     elif sport == "women's tennis":
        return wten_df
-    elif sport == 'basketball':
+    elif sport == "basketball":
         return bk_df
     elif sport == "women's basketball":
         return wbk_df
-    elif sport == 'soccer':
+    elif sport == "soccer":
         return soc_df
     elif sport == "volleyball":
         return vb_df
@@ -130,11 +130,11 @@ def compare_all_sports():
     plt.legend(loc="lower left")
     plt.show()
 
-#change colors
+
 def stacked_bar_plot():
     colors = []
-    xticks = [0]
-    xticklabels = ['1925-1926']
+    x_positions = [0]
+    x_labels = ['1925-1926']
     sport_list = ['baseball','softball',"women's basketball",'volleyball','basketball','football',"women's tennis",'soccer','tennis']
     start_year = 1926
 
@@ -152,8 +152,8 @@ def stacked_bar_plot():
     for i in range(2,len(retrieve_data_frame('football')['national_championship'].tolist())+1):
         vals = [retrieve_data_frame('football')['year'].iloc[-i]]
         if int(retrieve_data_frame('football')['year'].iloc[-i][3])==5:
-            xticks.append(i-1)
-            xticklabels.append(retrieve_data_frame('football')['year'].iloc[-i])
+            x_positions.append(i-1)
+            x_labels.append(retrieve_data_frame('football')['year'].iloc[-i])
         for j in range(0,len(sport_list)):
             sport_df = retrieve_data_frame(sport_list[j])
             df_start_year = convert_year_to_integer(sport_df['year'].iloc[-1])
@@ -177,9 +177,8 @@ def stacked_bar_plot():
     plt.ylabel('Number of Championship Wins', fontsize=10)
     plt.yticks([0,1,2],[0,1,2])
     plt.title('Championship Wins per Year Over 100 Years')
-    plt.xticks(xticks,xticklabels,fontsize=6, rotation=0)
+    plt.xticks(x_positions,x_labels,fontsize=6, rotation=0)
     plt.show()
-    #['1925-1926','1930-1931','1940-1941','1950-1951','1960-1961','1970-1971','1980-1981','1990-1991','2000-2001','2010-2011','2020-2021','2025-2026']
 
 
 #option 1 function,compare championships
@@ -486,4 +485,5 @@ while running:
         print("Please select a valid option.")
         print("")
         continue
+
 print("Thank you for using the Chomp Chain Reaction Data Analyzer!")
