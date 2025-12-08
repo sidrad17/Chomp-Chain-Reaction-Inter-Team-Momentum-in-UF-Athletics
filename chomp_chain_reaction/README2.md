@@ -1,26 +1,31 @@
-We recommend using PyCharm as the IDE, as it is the platform on which all code was created.  
+__We recommend using PyCharm as the IDE, as it is the platform on which all code was created.__  
 
-Scraping Data:  
+__Scraping Data:__  
 All csv files needed to run main.py have been provided.
 However, if the user wishes to test and run the scraper to obtain the 
 csv files themselves, they must run run_scraper.py. This file
 will scrape and clean the necessary data, adding them to folder titled cleaned_data.
-Manual changes must then be made to this data to account for missing years and inconsistencies.
+Manual changes must then be made to this data to account for missing years and inconsistencies. 
+This is done by copying and pasting the necessary additions into these proper rows. Rows must be
+placed between the years that surround them (ex. if a 1943-1944 season is missing, paste the missing
+row above the 1942-1943 season and below the 1944-1945 season).
+
 Additions are as follows.  
   
-football.csv:  
+__football.csv:__  
 1943-1944,0,0,0.0,no
 
-basketball.csv:  
+__basketball.csv:__  
 1987-1988,23.0,12.0,65.714,no  
 1986-1987,23.0,11.0,67.647,no  
+
 1943-1944,0,0,0.0,no  
 
-baseball.csv:  
+__baseball.csv:__  
 1943-1944,0,0,0.0,no  
 1942-1943,0,0,0.0,no  
 
-soccer.csv:  
+__soccer.csv:__  
 2025-2026,6.0,7.0,46.154,no  
 2024-2025,4.0,8.0,33.333,no  
 2023-2024,6.0,5.0,54.545,no  
@@ -29,13 +34,13 @@ soccer.csv:
 2020-2021,6.0,8.0,42.857,no  
 2019-2020,11.0,9.0,52.380,no  
 
-tennis.csv:  
+__tennis.csv:__  
 2025-2026,0,0,0.0,no  
 2024-2025,15,12,55.556,no  
 2023-2023,13,12,52.0,no  
 2022-2023,14,14,50.0,no  
 
-womens_tennis.csv:  
+__womens_tennis.csv:__  
 2025-2026,0,0,0.0,no  
 2024-2025,9,14,39.130,no  
 2023-2024,17,9,65.385,no  
@@ -53,5 +58,6 @@ womens_tennis.csv:
 
 The other csv files (volleyball.csv, softball.csv, and womens_basketball.csv) do not require additional editing.
 
-Running main.py:  
-In order to run main.py and user the interface, the user must simply run the code on their chosen IDE. 
+__Running main.py:__  
+In order to run main.py and user the interface, the user must simply run the code on their chosen IDE (PyCharm is
+recommended). The code prompts the user on how to use it in the console, so follow instructions as directed.
