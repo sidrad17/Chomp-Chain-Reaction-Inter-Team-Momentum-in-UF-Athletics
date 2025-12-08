@@ -41,30 +41,31 @@ def convert_year_to_integer(year_string):
     return int(start)
 
 def get_color(sport):
-    if sport == "softball":
-        return "olive"
-    elif sport == "baseball":
-        return "green"
-    elif sport == "football":
-        return "orange"
-    elif sport == "tennis":
-        return "red"
-    elif sport == "women's tennis":
-        return "pink"
+    if sport == "football":
+       return "orange"
     elif sport == "basketball":
         return "blue"
+    elif sport == "baseball":
+       return "green"
+    elif sport == "softball":
+        return "olive"
     elif sport == "women's basketball":
         return "cyan"
+    elif sport == "women's tennis":
+       return "pink"
     elif sport == "soccer":
         return "gray"
     elif sport == "volleyball":
         return "purple"
+    elif sport == "tennis":
+       return "red"
+
 
 def stacked_bar_plot():
     colors = []
     x_positions = [0]
     x_labels = ["1925-1926"]
-    sport_list = ['baseball','softball',"women's basketball",'volleyball','basketball','football',"women's tennis",'soccer','tennis']
+    sport_list = ["football", "basketball", "baseball", "softball", "women's basketball", "women's tennis", "soccer", "volleyball", "tennis"]
     start_year = 1926
 
     base_list = ["1925-1926"]
@@ -79,30 +80,30 @@ def stacked_bar_plot():
         colors.append(get_color(sport))
 
     #create rows and axis labels for the dataframe
-    for i in range(2,len(retrieve_data_frame('football')['national_championship'].tolist())+1):
+    for i in range(2,len(retrieve_data_frame("football")["national_championship"].tolist())+1):
         #create x labels for every 5th season
-        vals = [retrieve_data_frame('football')['year'].iloc[-i]]
-        if int(retrieve_data_frame('football')['year'].iloc[-i][3])==5:
+        vals = [retrieve_data_frame("football")["year"].iloc[-i]]
+        if int(retrieve_data_frame("football")["year"].iloc[-i][3])==5:
             x_positions.append(i-1)
-            x_labels.append(retrieve_data_frame('football')['year'].iloc[-i])
+            x_labels.append(retrieve_data_frame("football")["year"].iloc[-i])
 
         #make lists for each sport, following the format [sport_name, nc, nc, etc.]
         for j in range(0,len(sport_list)):
             sport_df = retrieve_data_frame(sport_list[j])
-            df_start_year = convert_year_to_integer(sport_df['year'].iloc[-1])
+            df_start_year = convert_year_to_integer(sport_df["year"].iloc[-1])
             #for sports with start years after 1926, append 0 for years the teams did not play
             if df_start_year > start_year:
                 if i <= df_start_year - start_year:
                     vals.append(0)
                 #for years a team played, append 1 if a national champsionhip was won and 0 otherwise
                 else:
-                    if retrieve_data_frame(sport_list[j])['national_championship'].iloc[-i+(convert_year_to_integer(sport_df['year'].iloc[-1]) - start_year)+1] == 'yes':
+                    if retrieve_data_frame(sport_list[j])["national_championship"].iloc[-i+(convert_year_to_integer(sport_df["year"].iloc[-1]) - start_year)+1] == "yes":
                         vals.append(1)
                     else:
                         vals.append(0)
 
             #for sports starting in 1926, follow the 1-0 rule for all seasons
-            elif retrieve_data_frame(sport_list[j])['national_championship'].iloc[-i] == 'yes':
+            elif retrieve_data_frame(sport_list[j])["national_championship"].iloc[-i] == "yes":
                 vals.append(1)
             else:
                 vals.append(0)
@@ -112,17 +113,18 @@ def stacked_bar_plot():
         num_rows += 1
 
     #create plot and adjust labels
-    df.plot(kind='bar', stacked=True, color=colors)
-    plt.xlabel('Season', fontsize=10)
+    df.plot(kind="bar", stacked=True, color=colors)
+    plt.xlabel("Season", fontsize=10)
     plt.xticks(x_positions, x_labels, fontsize=6, rotation=0)
-    plt.ylabel('Number of Championship Wins', fontsize=10)
+    plt.ylabel("Number of Championship Wins", fontsize=10)
     plt.yticks([0,1,2],[0,1,2])
-    plt.title('Championship Wins per Year Over 100 Years')
+    plt.title("Championship Wins per Year Over 100 Years")
     plt.show()
 
 
 def line_graph():
-    sport_list = ['baseball','softball',"women's basketball",'volleyball','basketball','football',"women's tennis",'soccer','tennis']
+    sport_list = ["football", "basketball", "baseball", "softball", "women's basketball", "women's tennis", "soccer", "volleyball", "tennis"]
+
     #loads all df into a dictionary
     sports_df = {}
     for sport in sport_list:
@@ -185,7 +187,7 @@ def line_graph():
 
 #option 1 function,compare championships
 def champ_sports_comparison(champ_sport):
-    sport_list = ['baseball','softball',"women's basketball",'volleyball','basketball','football',"women's tennis",'soccer','tennis']
+    sport_list = ["football", "basketball", "baseball", "softball", "women's basketball", "women's tennis", "soccer", "volleyball", "tennis"]
 
     sports_df = {}
     for sport in sport_list:
