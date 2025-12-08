@@ -1,6 +1,8 @@
 __We recommend using PyCharm as the IDE, as it is the platform on which all code was created.__  
 
 __Scraping Data:__  
+Ensure the most recent versions of os, re, requests, pandas, and io are installed
+
 All csv files needed to run main.py have been provided.
 However, if the user wishes to test and run the scraper to obtain the 
 csv files themselves, they must run run_scraper.py. This file
@@ -58,6 +60,8 @@ __womens_tennis.csv:__
 
 The other csv files (volleyball.csv, softball.csv, and womens_basketball.csv) do not require additional editing.
 
-__Running main.py:__  
+__Running main.py:__ 
+Ensure the most recent versions of pandas, numpy, and matplotlib.pyplot are installed.  
+
 In order to run main.py and user the interface, the user must simply run the code on their chosen IDE (PyCharm is
 recommended). The code prompts the user on how to use it in the console, so follow instructions as directed.
