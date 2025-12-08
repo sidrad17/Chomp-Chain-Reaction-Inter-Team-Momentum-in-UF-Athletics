@@ -1,15 +1,15 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-sb_df = pd.read_csv("softball.csv")
-bb_df = pd.read_csv("baseball.csv")
 fb_df = pd.read_csv("football.csv")
-ten_df = pd.read_csv("tennis.csv")
-wten_df = pd.read_csv("womens_tennis.csv")
 bk_df = pd.read_csv("basketball.csv")
+bb_df = pd.read_csv("baseball.csv")
+sb_df = pd.read_csv("softball.csv")
 wbk_df = pd.read_csv("womens_basketball.csv")
+wten_df = pd.read_csv("womens_tennis.csv")
 soc_df = pd.read_csv("soccer.csv")
 vb_df = pd.read_csv("volleyball.csv")
+ten_df = pd.read_csv("tennis.csv")
 
 def check_sport_validity(sport):
     if (sport!= "football" and sport!= "basketball" and sport!= "baseball" and sport!= "softball" and sport!= "women's basketball" and sport!= "women's tennis" and sport!= "soccer"  and sport!= "volleyball" and sport != 'tennis'):
@@ -17,24 +17,24 @@ def check_sport_validity(sport):
     return True
 
 def retrieve_data_frame(sport):
-    if sport == "softball":
-        return sb_df
-    elif sport == "baseball":
-       return bb_df
-    elif sport == "football":
+    if sport == "football":
        return fb_df
-    elif sport == "tennis":
-       return ten_df
-    elif sport == "women's tennis":
-       return wten_df
     elif sport == "basketball":
         return bk_df
+    elif sport == "baseball":
+       return bb_df
+    elif sport == "softball":
+        return sb_df
     elif sport == "women's basketball":
         return wbk_df
+    elif sport == "women's tennis":
+       return wten_df
     elif sport == "soccer":
         return soc_df
     elif sport == "volleyball":
         return vb_df
+    elif sport == "tennis":
+       return ten_df
 
 def convert_year_to_integer(year_string):
     start = year_string.split("-")[0]
@@ -63,12 +63,12 @@ def get_color(sport):
 def stacked_bar_plot():
     colors = []
     x_positions = [0]
-    x_labels = ['1925-1926']
+    x_labels = ["1925-1926"]
     sport_list = ['baseball','softball',"women's basketball",'volleyball','basketball','football',"women's tennis",'soccer','tennis']
     start_year = 1926
 
-    base_list = ['1925-1926']
-    columns = ['season']
+    base_list = ["1925-1926"]
+    columns = ["season"]
     for sport in sport_list:
         base_list.append(0)
         columns.append(sport)
@@ -78,39 +78,50 @@ def stacked_bar_plot():
     for sport in sport_list:
         colors.append(get_color(sport))
 
+    #create rows and axis labels for the dataframe
     for i in range(2,len(retrieve_data_frame('football')['national_championship'].tolist())+1):
+        #create x labels for every 5th season
         vals = [retrieve_data_frame('football')['year'].iloc[-i]]
         if int(retrieve_data_frame('football')['year'].iloc[-i][3])==5:
             x_positions.append(i-1)
             x_labels.append(retrieve_data_frame('football')['year'].iloc[-i])
+
+        #make lists for each sport, following the format [sport_name, nc, nc, etc.]
         for j in range(0,len(sport_list)):
             sport_df = retrieve_data_frame(sport_list[j])
             df_start_year = convert_year_to_integer(sport_df['year'].iloc[-1])
+            #for sports with start years after 1926, append 0 for years the teams did not play
             if df_start_year > start_year:
                 if i <= df_start_year - start_year:
                     vals.append(0)
+                #for years a team played, append 1 if a national champsionhip was won and 0 otherwise
                 else:
                     if retrieve_data_frame(sport_list[j])['national_championship'].iloc[-i+(convert_year_to_integer(sport_df['year'].iloc[-1]) - start_year)+1] == 'yes':
                         vals.append(1)
                     else:
                         vals.append(0)
+
+            #for sports starting in 1926, follow the 1-0 rule for all seasons
             elif retrieve_data_frame(sport_list[j])['national_championship'].iloc[-i] == 'yes':
                 vals.append(1)
             else:
                 vals.append(0)
+
+        #append new list to the dataframe
         df.loc[num_rows] = vals
         num_rows += 1
 
+    #create plot and adjust labels
     df.plot(kind='bar', stacked=True, color=colors)
     plt.xlabel('Season', fontsize=10)
+    plt.xticks(x_positions, x_labels, fontsize=6, rotation=0)
     plt.ylabel('Number of Championship Wins', fontsize=10)
     plt.yticks([0,1,2],[0,1,2])
     plt.title('Championship Wins per Year Over 100 Years')
-    plt.xticks(x_positions,x_labels,fontsize=6, rotation=0)
     plt.show()
 
 
-def compare_all_sports():
+def line_graph():
     sport_list = ['baseball','softball',"women's basketball",'volleyball','basketball','football',"women's tennis",'soccer','tennis']
     # loads all df into a dictionary
     sports_df = {}
@@ -124,21 +135,17 @@ def compare_all_sports():
     start_year_input = 1996
     end_year_input = 2024
 
-    # filters dfs to selected interval
+    #filters dfs to selected interval
     sport_interval_dfs = {}
     for sport, df in sports_df.items():
         interval_df = df[(df["start_year"] >= start_year_input) & (df["start_year"] <= end_year_input)]
         sport_interval_dfs[sport] = interval_df
 
-    # determine overlapping seasons
+    #determine overlapping seasons
     year_sets = []
     for df in sport_interval_dfs.values():
         year_sets.append(set(df["start_year"]))
     shared_years = sorted(set.intersection(*year_sets))
-
-    if not shared_years:
-        print("There are no overlapping seasons between these sports in this interval.")
-        return
 
     # ensures only shared years are being evaluated
     filtered_df = {}
@@ -161,14 +168,14 @@ def compare_all_sports():
         plt.plot(years, win_percentages, linewidth=3, marker="o", color=get_color(sport),
                  label=f"{sport.capitalize()} Win Percentage")
 
-    # labels for x-axis
+    #labels for x-axis
     example_sport = sport_list[0]
     x_positions = interval_df[example_sport]["start_year"][::4]
     x_labels = interval_df[example_sport]["season_label"][::4]
     plt.xticks(x_positions, x_labels)
 
 
-    # title
+    #title
     sports_names_formatted = ", ".join([sport.capitalize() for sport in sport_list])
     labels = list(df["season_label"])
     year_range = f"{labels[0]} Season to {labels[-1]} Season"
@@ -427,7 +434,7 @@ def compare_sports_means(sport_list):
     plt.show()
 
 #initial graphs and welcome statement
-compare_all_sports()
+line_graph()
 stacked_bar_plot()
 print("Welcome to the Chomp Chain Reaction Data Analyzer!")
 
