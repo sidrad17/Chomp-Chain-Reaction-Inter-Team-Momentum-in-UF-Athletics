@@ -1,21 +1,24 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+ten_df = pd.read_csv("tennis.csv")
 fb_df = pd.read_csv("football.csv")
-bk_df = pd.read_csv("basketball.csv")
-bb_df = pd.read_csv("baseball.csv")
 sb_df = pd.read_csv("softball.csv")
+bb_df = pd.read_csv("baseball.csv")
 wbk_df = pd.read_csv("womens_basketball.csv")
+bk_df = pd.read_csv("basketball.csv")
+vb_df = pd.read_csv("volleyball.csv")
 wten_df = pd.read_csv("womens_tennis.csv")
 soc_df = pd.read_csv("soccer.csv")
-vb_df = pd.read_csv("volleyball.csv")
-ten_df = pd.read_csv("tennis.csv")
 
+#check if a sport is one of the nine sports of study
 def check_sport_validity(sport):
-    if (sport!= "football" and sport!= "basketball" and sport!= "baseball" and sport!= "softball" and sport!= "women's basketball" and sport!= "women's tennis" and sport!= "soccer"  and sport!= "volleyball" and sport != 'tennis'):
+    sport_list = ["tennis", "football", "softball", "baseball", "women's basketball", "basketball", "volleyball", "women's tennis", "soccer"]
+    if sport not in sport_list:
         return False
     return True
 
+#return the dataframe associated with a valid sport
 def retrieve_data_frame(sport):
     if sport == "football":
        return fb_df
@@ -65,7 +68,7 @@ def stacked_bar_plot():
     colors = []
     x_positions = [0]
     x_labels = ["1925-1926"]
-    sport_list = ["football", "basketball", "baseball", "softball", "women's basketball", "women's tennis", "soccer", "volleyball", "tennis"]
+    sport_list = ["tennis", "football", "softball", "baseball", "women's basketball", "basketball", "volleyball", "women's tennis", "soccer"]
     start_year = 1926
 
     base_list = ["1925-1926"]
@@ -123,7 +126,7 @@ def stacked_bar_plot():
 
 
 def line_graph():
-    sport_list = ["football", "basketball", "baseball", "softball", "women's basketball", "women's tennis", "soccer", "volleyball", "tennis"]
+    sport_list = ["tennis", "football", "softball", "baseball", "women's basketball", "basketball", "volleyball", "women's tennis", "soccer"]
 
     #loads all df into a dictionary
     sports_df = {}
@@ -187,7 +190,7 @@ def line_graph():
 
 #option 1 function,compare championships
 def champ_sports_comparison(champ_sport):
-    sport_list = ["football", "basketball", "baseball", "softball", "women's basketball", "women's tennis", "soccer", "volleyball", "tennis"]
+    sport_list = ["tennis", "football", "softball", "baseball", "women's basketball", "basketball", "volleyball", "women's tennis", "soccer"]
 
     sports_df = {}
     for sport in sport_list:
