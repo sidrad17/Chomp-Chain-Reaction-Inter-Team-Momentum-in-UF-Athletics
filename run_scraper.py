@@ -439,6 +439,7 @@ print('='*80)
 print('SCRAPING UF ATHLETICS DATA - 9 SPORTS')
 print('='*80)
 
+#scrape football
 print('\n1. Football (Sports-Reference)')
 print('='*80)
 cfb_dfs = read_html_tables(sources['sportsref_cfb'])
@@ -453,6 +454,7 @@ if not cfb_raw.empty:
         print(f'✓ Football: {len(cleaned_cfb)} seasons | {cleaned_cfb["year"].min()} → {cleaned_cfb["year"].max()}')
         print(f'  Championships: {(cleaned_cfb["national_championship"] == "yes").sum()}')
 
+#scrape basketball
 print('\n2. Basketball (Sports-Reference)')
 print('='*80)
 cbb_dfs = read_html_tables(sources['sportsref_cbb'])
@@ -467,6 +469,7 @@ if not cbb_raw.empty:
         print(f'✓ Basketball: {len(cleaned_cbb)} seasons | {cleaned_cbb["year"].min()} → {cleaned_cbb["year"].max()}')
         print(f'  Championships: {(cleaned_cbb["national_championship"] == "yes").sum()}')
 
+#scrape women's basketball
 print('\n3. Women\'s Basketball (Sports-Reference)')
 print('='*80)
 wbb_dfs = read_html_tables(sources['sportsref_wbb'])
@@ -481,6 +484,7 @@ if not wbb_raw.empty:
         print(f'✓ Women\'s Basketball: {len(cleaned_wbb)} seasons | {cleaned_wbb["year"].min()} → {cleaned_wbb["year"].max()}')
         print(f'  Championships: {(cleaned_wbb["national_championship"] == "yes").sum()}')
 
+#scrape baseball
 print('\n4. Baseball (Wikipedia)')
 print('='*80)
 baseball_dfs = read_html_tables(sources['wikipedia_baseball'])
@@ -497,6 +501,7 @@ if baseball_dfs:
             print(f'✓ Baseball: {len(cleaned_baseball)} seasons | {cleaned_baseball["year"].min()} → {cleaned_baseball["year"].max()}')
             print(f'  Championships: {(cleaned_baseball["national_championship"] == "yes").sum()}')
 
+#scrape softball
 print('\n5. Softball (Wikipedia)')
 print('='*80)
 softball_dfs = read_html_tables(sources['wikipedia_softball'])
@@ -513,6 +518,7 @@ if softball_dfs:
             print(f'✓ Softball: {len(cleaned_softball)} seasons | {cleaned_softball["year"].min()} → {cleaned_softball["year"].max()}')
             print(f'  Championships: {(cleaned_softball["national_championship"] == "yes").sum()}')
 
+#scrape tennis
 print('\n6. Men\'s Tennis (Wikipedia)')
 print('='*80)
 tennis_dfs = read_html_tables(sources['wikipedia_tennis'])
@@ -532,6 +538,7 @@ if tennis_dfs:
 else:
     print('⚠ Could not scrape tennis data')
 
+#scrape women's tennis
 print('\n7. Women\'s Tennis (Wikipedia)')
 print('='*80)
 wtennis_dfs = read_html_tables(sources['wikipedia_wtennis'])
@@ -551,6 +558,7 @@ if wtennis_dfs:
 else:
     print('⚠ Could not scrape women\'s tennis data')
 
+#scrape soccer
 print('\n8. Women\'s Soccer (Wikipedia)')
 print('='*80)
 soccer_dfs = read_html_tables(sources['wikipedia_soccer'])
@@ -572,6 +580,7 @@ if soccer_dfs:
 else:
     print('⚠ Could not scrape soccer data')
 
+#scrape volleyball
 print('\n9. Women\'s Volleyball (Wikipedia)')
 print('='*80)
 volleyball_dfs = read_html_tables(sources['wikipedia_volleyball'])
@@ -618,5 +627,4 @@ for filename, name in sports:
     else:
         print(f'{name:25} | FILE NOT FOUND')
 
-print('\nAll data saved to cleaned_data/ folder')
 print('Format: year (YYYY-YYYY), wins, losses, win_loss_pct, national_championship')
