@@ -39,10 +39,12 @@ def retrieve_data_frame(sport):
     elif sport == "tennis":
        return ten_df
 
+#convert season labels to the first year as an integer
 def convert_year_to_integer(year_string):
     start = year_string.split("-")[0]
     return int(start)
 
+#return color that corresponds with a certain sport
 def get_color(sport):
     if sport == "football":
        return "orange"
@@ -63,14 +65,16 @@ def get_color(sport):
     elif sport == "tennis":
        return "red"
 
-
+#first initial graph, stacked bar plot of national championship wins per season
 def stacked_bar_plot():
+    #initial lists
     colors = []
     x_positions = [0]
     x_labels = ["1925-1926"]
     sport_list = ["tennis", "football", "softball", "baseball", "women's basketball", "basketball", "volleyball", "women's tennis", "soccer"]
     start_year = 1926
 
+    #create a base list to become the overall dataframe
     base_list = ["1925-1926"]
     columns = ["season"]
     for sport in sport_list:
@@ -79,6 +83,7 @@ def stacked_bar_plot():
     df = pd.DataFrame([base_list], columns=columns)
     num_rows = 1
 
+    #create a list of colors that correspond with each sport in sport_list, in order
     for sport in sport_list:
         colors.append(get_color(sport))
 
@@ -124,7 +129,7 @@ def stacked_bar_plot():
     plt.title("Championship Wins per Year Over 100 Years")
     plt.show()
 
-
+#second initial graph, line graph of win percentages for all overlapping years
 def line_graph():
     sport_list = ["tennis", "football", "softball", "baseball", "women's basketball", "basketball", "volleyball", "women's tennis", "soccer"]
 
@@ -179,7 +184,7 @@ def line_graph():
     plt.xticks(x_positions, x_labels)
 
 
-    #title
+    #titles and labels
     plt.title(f"Performance Trends of Gator Sports 1996-Present")
     plt.xlabel("Season")
     plt.ylabel("Win Percentage")
