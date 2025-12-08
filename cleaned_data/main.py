@@ -123,7 +123,7 @@ def stacked_bar_plot():
 
 def line_graph():
     sport_list = ['baseball','softball',"women's basketball",'volleyball','basketball','football',"women's tennis",'soccer','tennis']
-    # loads all df into a dictionary
+    #loads all df into a dictionary
     sports_df = {}
     for sport in sport_list:
         df = retrieve_data_frame(sport)
@@ -131,7 +131,7 @@ def line_graph():
         df["season_label"] = df["year"]
         sports_df[sport] = df
 
-    # start and end years
+    #start and end years
     start_year_input = 1996
     end_year_input = 2024
 
@@ -147,7 +147,7 @@ def line_graph():
         year_sets.append(set(df["start_year"]))
     shared_years = sorted(set.intersection(*year_sets))
 
-    # ensures only shared years are being evaluated
+    #ensures only shared years are being evaluated
     filtered_df = {}
     interval_df = {}
     for sport, df in sports_df.items():
@@ -155,7 +155,7 @@ def line_graph():
         sorted_df = filtered_df[sport].sort_values("start_year")
         interval_df[sport] = sorted_df
 
-    # plot graph
+    #plot graph
     plt.figure(figsize=(10, 10))
 
     # basic info needed for plotting (years, win%s, labels)
@@ -175,7 +175,6 @@ def line_graph():
 
 
     #title
-    labels = list(df["season_label"])
     plt.title(f"Performance Trends of Gator Sports 1996-Present")
     plt.xlabel("Season")
     plt.ylabel("Win Percentage")
