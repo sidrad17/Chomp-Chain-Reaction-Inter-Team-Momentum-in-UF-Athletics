@@ -163,7 +163,6 @@ def line_graph():
         df = interval_df[sport]
         years = list(df["start_year"])
         win_percentages = list(df["win_loss_pct"])
-        labels = list(df["season_label"])
 
         plt.plot(years, win_percentages, linewidth=3, marker="o", color=get_color(sport),
                  label=f"{sport.capitalize()} Win Percentage")
@@ -176,9 +175,7 @@ def line_graph():
 
 
     #title
-    sports_names_formatted = ", ".join([sport.capitalize() for sport in sport_list])
     labels = list(df["season_label"])
-    year_range = f"{labels[0]} Season to {labels[-1]} Season"
     plt.title(f"Performance Trends of Gator Sports 1996-Present")
     plt.xlabel("Season")
     plt.ylabel("Win Percentage")
