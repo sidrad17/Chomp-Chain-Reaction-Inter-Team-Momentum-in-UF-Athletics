@@ -20,24 +20,24 @@ def check_sport_validity(sport):
 
 #return the dataframe associated with a valid sport
 def retrieve_data_frame(sport):
-    if sport == "football":
+    if sport == "tennis":
+       return ten_df
+    elif sport == "football":
        return fb_df
-    elif sport == "basketball":
-        return bk_df
-    elif sport == "baseball":
-       return bb_df
     elif sport == "softball":
         return sb_df
+    elif sport == "baseball":
+       return bb_df
     elif sport == "women's basketball":
         return wbk_df
+    elif sport == "basketball":
+        return bk_df
+    elif sport == "volleyball":
+        return vb_df
     elif sport == "women's tennis":
        return wten_df
     elif sport == "soccer":
         return soc_df
-    elif sport == "volleyball":
-        return vb_df
-    elif sport == "tennis":
-       return ten_df
 
 #convert season labels to the first year as an integer
 def convert_year_to_integer(year_string):
@@ -46,24 +46,24 @@ def convert_year_to_integer(year_string):
 
 #return color that corresponds with a certain sport
 def get_color(sport):
-    if sport == "football":
+    if sport == "tennis":
+       return "red"
+    elif sport == "football":
        return "orange"
-    elif sport == "basketball":
-        return "blue"
-    elif sport == "baseball":
-       return "green"
     elif sport == "softball":
         return "olive"
+    elif sport == "baseball":
+       return "green"
     elif sport == "women's basketball":
         return "cyan"
+    elif sport == "basketball":
+        return "blue"
+    elif sport == "volleyball":
+        return "purple"
     elif sport == "women's tennis":
        return "pink"
     elif sport == "soccer":
         return "gray"
-    elif sport == "volleyball":
-        return "purple"
-    elif sport == "tennis":
-       return "red"
 
 #first initial graph, stacked bar plot of national championship wins per season
 def stacked_bar_plot():
@@ -244,6 +244,7 @@ def champ_sports_comparison(champ_sport):
         win_pct = df["win_loss_pct"].tolist()
         plt.scatter(years, win_pct, s=120, color = get_color(sport), label=f"{sport.capitalize()} Win %")
 
+    #labels and title
     plt.xticks(x_positions, x_labels)
     plt.xlabel(f"{champ_sport.capitalize()} Championship Season")
     plt.ylabel("Win Percentage")
