@@ -8,17 +8,48 @@ will scrape and clean the necessary data, adding them to folder titled cleaned_d
 Manual changes must then be made to this data to account for missing years and inconsistencies.
 Additions are as follows.  
   
-football.csv:
+football.csv:  
+1943-1944,0,0,0.0,no
 
-basketball.csv:
+basketball.csv:  
+1987-1988,23.0,12.0,65.714,no  
+1986-1987,23.0,11.0,67.647,no  
+1943-1944,0,0,0.0,no  
 
-baseball.csv:
+baseball.csv:  
+1943-1944,0,0,0.0,no  
+1942-1943,0,0,0.0,no  
 
-soccer.csv:
+soccer.csv:  
+2025-2026,6.0,7.0,46.154,no  
+2024-2025,4.0,8.0,33.333,no  
+2023-2024,6.0,5.0,54.545,no  
+2022-2023,2.0,14.0,12.500,no  
+2021-2022,4.0,12.0,25.0,no  
+2020-2021,6.0,8.0,42.857,no  
+2019-2020,11.0,9.0,52.380,no  
 
-tennis.csv:
+tennis.csv:  
+2025-2026,0,0,0.0,no  
+2024-2025,15,12,55.556,no  
+2023-2023,13,12,52.0,no  
+2022-2023,14,14,50.0,no  
 
-womens_tennis.csv:
+womens_tennis.csv:  
+2025-2026,0,0,0.0,no  
+2024-2025,9,14,39.130,no  
+2023-2024,17,9,65.385,no  
+2022-2023,18,8,69.231,no  
+2021-2022,21,7,75.0,no  
+2020-2021,13,8,61.905,no  
+2019-2020,5,4,55.556,no  
+2018-2019,13,12,52.0,no  
+2017-2018,19,9,67.857,no  
+2016-2017,29,3,90.625,yes  
+2015-2016,23,3,88.462,no  
+2014-2015,24,4,85.714,no  
+2013-2014,23,6,79.310,no  
+2012-2013,26,3,89.655,no  
 
 The other csv files (volleyball.csv, softball.csv, and womens_basketball.csv) do not require additional editing.
 
