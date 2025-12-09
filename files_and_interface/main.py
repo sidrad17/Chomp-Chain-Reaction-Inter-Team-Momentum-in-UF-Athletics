@@ -448,6 +448,7 @@ print("Welcome to the Chomp Chain Reaction Data Analyzer!")
 #menu loop
 is_running = True
 while is_running:
+    print("\n")
     print("1. Compare the win percentages of all sports during a specific sport's championship seasons")
     print("2. Compare the average rate of change and total change of sports' win percentages over a specific interval")
     print("3. Find the correlation between two sports' win percentages")

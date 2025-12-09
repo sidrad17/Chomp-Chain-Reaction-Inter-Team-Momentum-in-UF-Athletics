@@ -21,13 +21,7 @@ __basketball.csv:__
 1987-1988,23.0,12.0,65.714,no  
 1986-1987,23.0,11.0,67.647,no  
 
-1943-1944,0,0,0.0,no  
-
-__baseball.csv:__  
-205-2025,0,0,0.0,no  
-
-1943-1944,0,0,0.0,no  
-1942-1943,0,0,0.0,no  
+1943-1944,0,0,0.0,no
 
 __soccer.csv:__  
 2025-2026,6.0,7.0,46.154,no  
@@ -44,6 +38,12 @@ __tennis.csv:__
 2023-2023,13,12,52.0,no  
 2022-2023,14,14,50.0,no  
 
+1945-1946,0,0,0.0,no
+1944-1945,0,0,0.0,no
+1943-1944,0,0,0.0,no
+1942-1943,0,0,0.0,no
+1941-1942,0,0,0.0,no
+
 __womens_tennis.csv:__  
 2025-2026,0,0,0.0,no  
 2024-2025,9,14,39.130,no  
@@ -58,12 +58,20 @@ __womens_tennis.csv:__
 2015-2016,23,3,88.462,no  
 2014-2015,24,4,85.714,no  
 2013-2014,23,6,79.310,no  
-2012-2013,26,3,89.655,no  
+2012-2013,26,3,89.655,no
 
 __softball.csv:__  
 2025-2026,0,0,0.0,no
 
-The other csv files (volleyball.csv and womens_basketball.csv) do not require additional editing.
+__baseball.csv:__  
+2025-2026,0,0,0.0,no  
+
+1943-1944,0,0,0.0,no  
+1942-1943,0,0,0.0,no
+
+*Delete the 1924-1925 season (bottom row)
+
+__The other csv files__ (volleyball.csv and womens_basketball.csv) do not require additional editing.
 
 __Running main.py:__ 
 Ensure the most recent versions of pandas, numpy, and matplotlib.pyplot are installed.  
