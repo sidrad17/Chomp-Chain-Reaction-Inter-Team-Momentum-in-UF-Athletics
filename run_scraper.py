@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 #run the data scraping and cleaning to generate CSV files for all 9 UF sports
 
-import os, re, time
+import os, re
 import requests
 import pandas as pd
-from bs4 import BeautifulSoup
 from io import StringIO
 
-OUTPUT_DIR = 'cleaned_data'
+OUTPUT_DIR = 'cleaned_data3'
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 headers = {'User-Agent': 'Mozilla/5.0 (compatible; UFDataCollector/1.0)'}
