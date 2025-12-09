@@ -454,6 +454,7 @@ while is_running:
     print("4. Exit")
     option = input("Type in a number to select an option: ")
 
+    #user selects option 1
     if option == "1":
         champ_sport = input("Enter the championship sport for comparison: ")
         champ_sport = champ_sport.lower()
@@ -463,6 +464,7 @@ while is_running:
             continue
         champ_sports_comparison(champ_sport)
 
+    #user selects option 2
     elif option == "2":
         num_sports = int(input("Enter the number of sports to compare: "))
         sports_means = []
@@ -476,6 +478,7 @@ while is_running:
             sports_means.append(selection)
         compare_sports_means(sports_means)
 
+    #user selects option 3
     elif option == "3":
         sport1 = input("Enter the first sport for comparison: ")
         sport1 = sport1.lower()
@@ -491,12 +494,15 @@ while is_running:
             continue
         sports_correlation(sport1, sport2)
 
+    #user selects option 4
     elif option == "4":
         is_running = False
 
+    #user selects an invalid option
     else:
         print("Please select a valid option.")
         print("")
         continue
 
+#final message
 print("Thank you for using the Chomp Chain Reaction Data Analyzer!")
